@@ -9,5 +9,10 @@ Laporan ini menyajikan hasil analisis dari index kerja yang telah dilakukan. Ind
 - Clone repository ini ke komputer lokal
 - Masuk ke direktori yang telah di clone `cd laporan-index-kerja`
 - Install dependencies dengan menjalankan perintah `bun install` atau `npm install`
+- Tulis environment variables pada file `.env.local`
+    ```
+    TURSO_DATABASE_URL=
+    TURSO_AUTH_TOKEN=
+    ```
 - Jalankan aplikasi dengan menjalankan perintah `bun dev` atau `npm run dev`
 - Akses laporan index kerja melalui browser di alamat `http://localhost:3000`
