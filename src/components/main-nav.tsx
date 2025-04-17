@@ -8,24 +8,33 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOut, MonitorCog, User2 } from "lucide-react";
-import { Button } from "./ui/button";
+import { LogOut, User2 } from "lucide-react";
 import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
+import Image from "next/image";
 
 export default function MainNavigation() {
 	return (
 		<nav className="w-full py-4 flex items-center justify-between">
 			<TooltipProvider>
 				<Tooltip>
-					<TooltipTrigger asChild>
-						<Button variant="ghost" className="pl-0 ml-0">
-							<MonitorCog className="text-green-500" /> L.I.K
-						</Button>
+					<TooltipTrigger>
+						<div className="flex items-center gap-4">
+							<Image
+								src="/images/logo_mateng.png"
+								width={30}
+								height={30}
+								alt="Logo Mamuju Tengah"
+							/>
+							<div className="text-xs font-bold flex flex-col items-start">
+								<p>Laporan Index</p>
+								<p>Kerja</p>
+							</div>
+						</div>
 					</TooltipTrigger>
 					<TooltipContent>
 						<p>Laporan Index Kerja</p>
