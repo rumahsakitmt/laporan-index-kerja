@@ -22,7 +22,7 @@ import StatusSelect from "./form/status-select";
 import { Send } from "lucide-react";
 
 const laporanSchema = z.object({
-	date: z.string(),
+	date: z.date(),
 	time: z.string(),
 	room: z.string(),
 	problem: z.string(),
@@ -37,7 +37,7 @@ export default function LaporanIndexForm() {
 	const form = useForm<LaporanData>({
 		resolver: zodResolver(laporanSchema),
 		defaultValues: {
-			date: "",
+			date: new Date(),
 			time: "",
 			room: "",
 			problem: "",
@@ -61,7 +61,7 @@ export default function LaporanIndexForm() {
 						<FormItem>
 							<FormLabel>Waktu</FormLabel>
 							<FormControl>
-								<TimeRangePicker />
+								<TimeRangePicker onChange={field.onChange} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>

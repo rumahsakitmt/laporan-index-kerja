@@ -4,10 +4,18 @@ import { useState, useEffect, type ChangeEvent } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 
-export default function TimeRangePicker() {
+interface TimeRangePickerProps {
+	onChange: (value: string) => void;
+}
+
+export default function TimeRangePicker({ onChange }: TimeRangePickerProps) {
 	const [startTime, setStartTime] = useState("");
 	const [endTime, setEndTime] = useState("");
 	const [error, setError] = useState("");
+
+	useEffect(() => {
+		onChange(`${startTime}-${endTime}`);
+	}, [startTime, endTime, onChange]);
 
 	useEffect(() => {
 		const now = new Date();
@@ -21,7 +29,8 @@ export default function TimeRangePicker() {
 		endDate.setHours(endDate.getHours() + 1);
 		const endHours = endDate.getHours().toString().padStart(2, "0");
 		const endMinutes = endDate.getMinutes().toString().padStart(2, "0");
-		setEndTime(`${endHours}:${endMinutes}`);
+		const endTime = `${endHours}:${endMinutes}`;
+		setEndTime(endTime);
 	}, []);
 
 	const handleEndTimeChange = (e: ChangeEvent<HTMLInputElement>) => {

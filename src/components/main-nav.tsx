@@ -8,7 +8,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOut, User2 } from "lucide-react";
+import { DoorOpen, LogOut, User2 } from "lucide-react";
 import {
 	Tooltip,
 	TooltipContent,
@@ -18,7 +18,7 @@ import {
 import Image from "next/image";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-import { Button, buttonVariants } from "./ui/button";
+import { buttonVariants } from "./ui/button";
 import SignOutButton from "./sign-out-button";
 import Link from "next/link";
 
@@ -32,18 +32,20 @@ export default async function MainNavigation() {
 			<TooltipProvider>
 				<Tooltip>
 					<TooltipTrigger>
-						<div className="flex items-center gap-4">
-							<Image
-								src="/images/logo_mateng.png"
-								width={30}
-								height={30}
-								alt="Logo Mamuju Tengah"
-							/>
-							<div className="text-xs font-bold flex flex-col items-start">
-								<p>Laporan Index</p>
-								<p>Kerja IT</p>
+						<Link href="/">
+							<div className="flex items-center gap-4">
+								<Image
+									src="/images/logo_mateng.png"
+									width={30}
+									height={30}
+									alt="Logo Mamuju Tengah"
+								/>
+								<div className="text-xs font-bold flex flex-col items-start">
+									<p>Laporan Index</p>
+									<p>Kerja IT</p>
+								</div>
 							</div>
-						</div>
+						</Link>
 					</TooltipTrigger>
 					<TooltipContent>
 						<p>Laporan Index Kerja</p>
@@ -68,6 +70,12 @@ export default async function MainNavigation() {
 							<User2 />
 							Profile
 						</DropdownMenuItem>
+						<Link href="/ruangan">
+							<DropdownMenuItem>
+								<DoorOpen />
+								Ruangan
+							</DropdownMenuItem>
+						</Link>
 						<SignOutButton />
 					</DropdownMenuContent>
 				</DropdownMenu>

@@ -29,7 +29,7 @@ export function DatePicker({ form }: DatePickerProps) {
 	return (
 		<FormField
 			control={form.control}
-			name="dob"
+			name="date"
 			render={({ field }) => (
 				<FormItem className="flex flex-col">
 					<FormLabel>Tanggal</FormLabel>
@@ -57,7 +57,6 @@ export function DatePicker({ form }: DatePickerProps) {
 								mode="single"
 								selected={field.value}
 								onSelect={field.onChange}
-								disabled={(date) => date < new Date("1900-01-01")}
 								initialFocus
 							/>
 						</PopoverContent>
