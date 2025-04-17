@@ -32,7 +32,7 @@ export default function LaporanIndexContainer() {
 		return (
 			<Dialog open={open} onOpenChange={setOpen}>
 				<DialogTrigger asChild>
-					<Button className="w-full  md:w-max">
+					<Button size="sm" className="w-full  md:w-max">
 						<NotebookPen />
 						Buat Laporan
 					</Button>
@@ -53,7 +53,7 @@ export default function LaporanIndexContainer() {
 		<div>
 			<Drawer>
 				<DrawerTrigger asChild>
-					<Button className="w-full md:w-max">
+					<Button size="sm" className="w-full md:w-max">
 						<NotebookPen />
 						Buat Laporan
 					</Button>

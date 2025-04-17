@@ -16,8 +16,17 @@ import {
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
 import Image from "next/image";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { Button, buttonVariants } from "./ui/button";
+import SignOutButton from "./sign-out-button";
+import Link from "next/link";
 
-export default function MainNavigation() {
+export default async function MainNavigation() {
+	const session = await auth.api.getSession({
+		headers: await headers(),
+	});
+
 	return (
 		<nav className="w-full py-4 flex items-center justify-between">
 			<TooltipProvider>
@@ -32,7 +41,7 @@ export default function MainNavigation() {
 							/>
 							<div className="text-xs font-bold flex flex-col items-start">
 								<p>Laporan Index</p>
-								<p>Kerja</p>
+								<p>Kerja IT</p>
 							</div>
 						</div>
 					</TooltipTrigger>
@@ -42,26 +51,48 @@ export default function MainNavigation() {
 				</Tooltip>
 			</TooltipProvider>
 
-			<DropdownMenu>
-				<DropdownMenuTrigger>
-					<Avatar>
-						<AvatarImage src="https://github.com/putuhema.png" />
-						<AvatarFallback>CN</AvatarFallback>
-					</Avatar>
-				</DropdownMenuTrigger>
-				<DropdownMenuContent align="end">
-					<DropdownMenuLabel>My Account</DropdownMenuLabel>
-					<DropdownMenuSeparator />
-					<DropdownMenuItem>
-						<User2 />
-						Profile
-					</DropdownMenuItem>
-					<DropdownMenuItem>
-						<LogOut />
-						Log out
-					</DropdownMenuItem>
-				</DropdownMenuContent>
-			</DropdownMenu>
+			{session ? (
+				<DropdownMenu>
+					<DropdownMenuTrigger>
+						<Avatar>
+							<AvatarImage src={session.user.image ?? ""} />
+							<AvatarFallback>
+								{session.user.name.substring(0, 2)}
+							</AvatarFallback>
+						</Avatar>
+					</DropdownMenuTrigger>
+					<DropdownMenuContent align="end">
+						<DropdownMenuLabel>{session.user.name}</DropdownMenuLabel>
+						<DropdownMenuSeparator />
+						<DropdownMenuItem>
+							<User2 />
+							Profile
+						</DropdownMenuItem>
+						<SignOutButton />
+					</DropdownMenuContent>
+				</DropdownMenu>
+			) : (
+				<div className="flex items-center gap-2">
+					<Link
+						href="/sign-in"
+						className={buttonVariants({
+							variant: "default",
+							size: "sm",
+						})}
+					>
+						Masuk
+					</Link>
+					<Link
+						href="/sign-up"
+						className={buttonVariants({
+							variant: "secondary",
+							size: "sm",
+						})}
+					>
+						Daftar
+					</Link>
+				</div>
+			)}
 		</nav>
 	);
 }

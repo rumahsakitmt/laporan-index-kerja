@@ -7,99 +7,41 @@ import {
 	CardHeader,
 	CardTitle,
 	CardDescription,
-	CardFooter,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { signIn } from "@/lib/auth-client";
-import Link from "next/link";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 export default function SignIn() {
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
 	const [loading, setLoading] = useState(false);
-	const [rememberMe, setRememberMe] = useState(false);
 
 	return (
-		<Card className="max-w-md">
-			<CardHeader>
-				<CardTitle className="text-lg md:text-xl">Sign In</CardTitle>
-				<CardDescription className="text-xs md:text-sm">
-					Enter your email below to login to your account
-				</CardDescription>
+		<Card className="max-w-xl w-full mx-4 md:mx-0 md:w-xl">
+			<CardHeader className="flex">
+				<div className="flex-1">
+					<Image
+						className="w-auto h-auto mx-auto"
+						src="/images/logo_mateng.png"
+						width={100}
+						height={100}
+						alt="logo mamuju tengah"
+					/>
+				</div>
+				<div className="flex-1">
+					<CardTitle className="text-lg md:text-xl">
+						Laporan Index Kerja IT <br /> RSUD Mateng
+					</CardTitle>
+					<CardDescription className="text-xs md:text-sm">
+						Laporan ini menyajikan hasil analisis dari index kerja yang telah
+						dilakukan. Index kerja ini mencakup berbagai aspek penting seperti
+						produktivitas, efisiensi, dan kinerja karyawan.
+					</CardDescription>
+				</div>
 			</CardHeader>
 			<CardContent>
 				<div className="grid gap-4">
-					<div className="grid gap-2">
-						<Label htmlFor="email">Email</Label>
-						<Input
-							id="email"
-							type="email"
-							placeholder="m@example.com"
-							required
-							onChange={(e) => {
-								setEmail(e.target.value);
-							}}
-							value={email}
-						/>
-					</div>
-
-					<div className="grid gap-2">
-						<div className="flex items-center">
-							<Label htmlFor="password">Password</Label>
-							<Link href="#" className="ml-auto inline-block text-sm underline">
-								Forgot your password?
-							</Link>
-						</div>
-
-						<Input
-							id="password"
-							type="password"
-							placeholder="password"
-							autoComplete="password"
-							value={password}
-							onChange={(e) => setPassword(e.target.value)}
-						/>
-					</div>
-
-					<div className="flex items-center gap-2">
-						<Checkbox
-							id="remember"
-							onClick={() => {
-								setRememberMe(!rememberMe);
-							}}
-						/>
-						<Label htmlFor="remember">Remember me</Label>
-					</div>
-
-					<Button
-						type="submit"
-						className="w-full"
-						disabled={loading}
-						onClick={async () => {
-							await signIn.email(
-								{
-									email,
-									password,
-								},
-								{
-									onRequest: (ctx) => {
-										setLoading(true);
-									},
-									onResponse: (ctx) => {
-										setLoading(false);
-									},
-								},
-							);
-						}}
-					>
-						{loading ? <Loader2 size={16} className="animate-spin" /> : "Login"}
-					</Button>
-
 					<div
 						className={cn(
 							"w-full gap-2 flex items-center",
@@ -114,7 +56,6 @@ export default function SignIn() {
 								await signIn.social(
 									{
 										provider: "google",
-										callbackURL: "/dashboard",
 									},
 									{
 										onRequest: (ctx) => {
@@ -150,7 +91,7 @@ export default function SignIn() {
 									d="M130.55 50.479c24.514 0 41.05 10.589 50.479 19.438l36.844-35.974C195.245 12.91 165.798 0 130.55 0C79.49 0 35.393 29.301 13.925 71.947l42.211 32.783c10.59-31.477 39.891-54.251 74.414-54.251"
 								></path>
 							</svg>
-							Sign in with Google
+							Masuk menggukan Google
 						</Button>
 					</div>
 				</div>
