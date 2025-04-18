@@ -5,8 +5,8 @@ import React from "react";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { useGetReports } from "../../query/get-reports";
 import { format } from "date-fns";
-import { getReadableDuration } from "@/lib/utils";
-import { Badge, type badgeVariants } from "@/components/ui/badge";
+import { allowedRole, getReadableDuration } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 import { CircleCheck, CircleX, Loader } from "lucide-react";
 
 import {
@@ -15,9 +15,16 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
+import ReportTableAction from "./report-table-action";
+import { useAuth } from "@/provider/auth-provider";
 
-export default function ReportRowData() {
-	const { data: reports, isLoading } = useGetReports();
+interface ReportRowDataProps {
+	userId?: string;
+}
+
+export default function ReportRowData({ userId }: ReportRowDataProps) {
+	const session = useAuth();
+	const { data: reports, isLoading } = useGetReports({ userId: userId ?? "" });
 
 	if (isLoading) {
 		return (
@@ -97,11 +104,14 @@ export default function ReportRowData() {
 						</TooltipProvider>
 					</TableCell>
 					<TableCell>
-						<div>
-							<p>{getReadableDuration(report.time)}</p>
-							<p className="text-xs text-muted-foreground">{report.time}</p>
-						</div>
+						<p>{getReadableDuration(report.time)}</p>
+						<p className="text-xs text-muted-foreground">{report.time}</p>
 					</TableCell>
+					{allowedRole(session?.session?.user.role ?? "") && (
+						<TableCell className="text-center">
+							<ReportTableAction />
+						</TableCell>
+					)}
 				</TableRow>
 			))}
 		</>

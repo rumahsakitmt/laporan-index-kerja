@@ -10,4 +10,8 @@ export const reportSchema = z.object({
 	notes: z.string().optional(),
 });
 
+export const queryReport = z.object({
+	userId: z.string().optional(),
+});
+
 export type reportData = z.infer<typeof reportSchema>;

@@ -5,6 +5,13 @@ export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
 }
 
+export const ALLOWED_ROLES = ["petugas", "admin"] as const;
+export type Role = (typeof ALLOWED_ROLES)[number];
+
+export function allowedRole(role: string): role is Role {
+	return ALLOWED_ROLES.includes(role as Role);
+}
+
 export function getReadableDuration(timeRange: string): string {
 	const [start, end] = timeRange.split("-");
 	const [startHour, startMinute] = start.split(":").map(Number);

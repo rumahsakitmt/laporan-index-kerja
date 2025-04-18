@@ -36,21 +36,27 @@ export default function RoomForm() {
 
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 w-full">
+			<form
+				onSubmit={form.handleSubmit(onSubmit)}
+				className="w-full flex items-center gap-4"
+			>
 				<FormField
 					control={form.control}
 					name="name"
 					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Nama Ruangan</FormLabel>
+						<FormItem className="w-full">
 							<FormControl>
-								<Input placeholder="Nama Ruangan" {...field} />
+								<Input
+									placeholder="Nama Ruangan"
+									className="w-full"
+									{...field}
+								/>
 							</FormControl>
 							<FormMessage />
 						</FormItem>
 					)}
 				/>
-				<Button type="submit" className="w-full">
+				<Button type="submit" className="w-max">
 					<Plus /> Tambah
 				</Button>
 			</form>

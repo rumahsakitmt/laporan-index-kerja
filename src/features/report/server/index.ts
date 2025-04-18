@@ -1,13 +1,23 @@
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
-import { reportSchema } from "../schema";
+import { queryReport, reportSchema } from "../schema";
 import { db } from "@/db";
 import { Report, Room, user } from "@/db/schema";
 import type { Variables } from "@/app/api/[[...route]]/route";
-import { desc, eq } from "drizzle-orm";
+import { and, desc, eq, sql, type SQL } from "drizzle-orm";
 
 const app = new Hono<Variables>()
-	.get("/", async (c) => {
+	.get("/", zValidator("query", queryReport), async (c) => {
+		const query = c.req.valid("query");
+
+		const conditions: SQL<unknown>[] = [];
+
+		console.log(query.userId);
+
+		if (query.userId) {
+			conditions.push(eq(Report.userId, query.userId));
+		}
+
 		const reports = await db
 			.select({
 				id: Report.id,
@@ -28,7 +38,9 @@ const app = new Hono<Variables>()
 			.from(Report)
 			.orderBy(desc(Report.date))
 			.leftJoin(user, eq(user.id, Report.userId))
-			.leftJoin(Room, eq(Room.id, Report.roomId));
+			.leftJoin(Room, eq(Room.id, Report.roomId))
+			.where(conditions.length > 0 ? and(...conditions) : sql`1=1`);
+
 		return c.json(reports);
 	})
 	.post("/", zValidator("json", reportSchema), async (c) => {

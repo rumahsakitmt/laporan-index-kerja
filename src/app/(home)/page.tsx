@@ -1,21 +1,13 @@
-import LaporanIndexContainer from "@/components/laporan-index-container";
+import ReportFilter from "@/features/report/components/table/report-filter";
 import { ReportTable } from "@/features/report/components/table/report-table";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
+import { getAuthSession } from "@/lib/auth-context";
 
 export default async function Home() {
-	const session = await auth.api.getSession({
-		headers: await headers(),
-	});
-
+	const currentUser = await getAuthSession();
 	return (
-		<main>
-			<div className="space-y-4">
-				<div className="flex justify-end">
-					{session?.user.role === "petugas" && <LaporanIndexContainer />}
-				</div>
-				<ReportTable />
-			</div>
+		<main className="space-y-4">
+			<ReportFilter isUserOnly={true} role={currentUser?.user.role ?? ""} />
+			<ReportTable />
 		</main>
 	);
 }

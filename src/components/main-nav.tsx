@@ -8,14 +8,14 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { DoorOpen, User2 } from "lucide-react";
+import { DoorOpen, NotebookPen, User2 } from "lucide-react";
 import Image from "next/image";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-import { buttonVariants } from "./ui/button";
 import SignOutButton from "./sign-out-button";
 import Link from "next/link";
 import GoogleSigninButton from "./google-signin-button";
+import { allowedRole } from "@/lib/utils";
 
 export default async function MainNavigation() {
 	const session = await auth.api.getSession({
@@ -52,16 +52,29 @@ export default async function MainNavigation() {
 					<DropdownMenuContent align="end">
 						<DropdownMenuLabel>{session.user.name}</DropdownMenuLabel>
 						<DropdownMenuSeparator />
-						<DropdownMenuItem>
-							<User2 />
-							Profile
-						</DropdownMenuItem>
+						{allowedRole(session.user.role ?? "") ? (
+							<Link href={`/laporan/${session.user.id}`}>
+								<DropdownMenuItem>
+									<NotebookPen />
+									Laporanku
+								</DropdownMenuItem>
+							</Link>
+						) : (
+							<DropdownMenuItem disabled={true}>
+								<NotebookPen />
+								Laporanku
+							</DropdownMenuItem>
+						)}
 						<Link href="/ruangan">
 							<DropdownMenuItem>
 								<DoorOpen />
 								Ruangan
 							</DropdownMenuItem>
 						</Link>
+						<DropdownMenuItem>
+							<User2 />
+							Profile
+						</DropdownMenuItem>
 						<SignOutButton />
 					</DropdownMenuContent>
 				</DropdownMenu>

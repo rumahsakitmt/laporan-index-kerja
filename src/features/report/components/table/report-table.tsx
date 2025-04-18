@@ -1,5 +1,3 @@
-"use client";
-
 import {
 	Table,
 	TableBody,
@@ -8,8 +6,15 @@ import {
 	TableRow,
 } from "@/components/ui/table";
 import ReportRowData from "./report-row-data";
+import { getAuthSession } from "@/lib/auth-context";
+import { allowedRole } from "@/lib/utils";
 
-export function ReportTable() {
+interface ReportTableProps {
+	userId?: string;
+}
+
+export async function ReportTable({ userId }: ReportTableProps) {
+	const currentUser = await getAuthSession();
 	return (
 		<Table>
 			<TableHeader>
@@ -21,10 +26,13 @@ export function ReportTable() {
 					<TableHead className="w-40 text-center">Masalah</TableHead>
 					<TableHead className="w-40 text-center">Kebutuhan</TableHead>
 					<TableHead>Lama Pengerjaan</TableHead>
+					{allowedRole(currentUser?.user.role ?? "") && (
+						<TableHead className="text-center">Aksi</TableHead>
+					)}
 				</TableRow>
 			</TableHeader>
 			<TableBody>
-				<ReportRowData />
+				<ReportRowData userId={userId} />
 			</TableBody>
 		</Table>
 	);
