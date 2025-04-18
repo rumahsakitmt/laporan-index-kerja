@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 
 import {
@@ -16,6 +18,7 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import type { UseFormReturn } from "react-hook-form";
+import { useGetRooms } from "@/features/room/query/get-rooms";
 
 interface RoomSelectProps {
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -23,6 +26,16 @@ interface RoomSelectProps {
 }
 
 export default function RoomSelect({ form }: RoomSelectProps) {
+	const { data: rooms, isLoading } = useGetRooms();
+
+	if (isLoading) {
+		return <div>loading...</div>;
+	}
+
+	if (!rooms) {
+		return <div>no rooms yet.</div>;
+	}
+
 	return (
 		<FormField
 			control={form.control}
@@ -33,12 +46,14 @@ export default function RoomSelect({ form }: RoomSelectProps) {
 					<FormControl>
 						<Select onValueChange={field.onChange} defaultValue={field.value}>
 							<SelectTrigger className="w-full">
-								<SelectValue placeholder="Theme" />
+								<SelectValue placeholder="Ruangan" />
 							</SelectTrigger>
 							<SelectContent>
-								<SelectItem value="light">Light</SelectItem>
-								<SelectItem value="dark">Dark</SelectItem>
-								<SelectItem value="system">System</SelectItem>
+								{rooms.map((room) => (
+									<SelectItem key={room.id} value={room.id.toString()}>
+										{room.name}
+									</SelectItem>
+								))}
 							</SelectContent>
 						</Select>
 					</FormControl>

@@ -45,7 +45,7 @@ export default function StatusSelect({ form }: StatusSelectProps) {
 								defaultValue={field.value}
 							>
 								<SelectTrigger className="w-full">
-									<SelectValue placeholder="Selesai" />
+									<SelectValue placeholder="Status" />
 								</SelectTrigger>
 								<SelectContent>
 									<SelectItem value="selesai">

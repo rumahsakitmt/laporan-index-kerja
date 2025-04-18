@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 
-import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import TimeRangePicker from "./form/time-picker";
@@ -20,22 +19,12 @@ import RoomSelect from "./form/room-select";
 import { DatePicker } from "./form/date-picker";
 import StatusSelect from "./form/status-select";
 import { Send } from "lucide-react";
-
-const laporanSchema = z.object({
-	date: z.date(),
-	time: z.string(),
-	room: z.string(),
-	problem: z.string(),
-	needs: z.string(),
-	status: z.string(),
-	notes: z.string().optional(),
-});
-
-type LaporanData = z.infer<typeof laporanSchema>;
+import { type reportData, reportSchema } from "@/features/report/schema";
+import { useCreateReport } from "@/features/report/query/create-report";
 
 export default function LaporanIndexForm() {
-	const form = useForm<LaporanData>({
-		resolver: zodResolver(laporanSchema),
+	const form = useForm<reportData>({
+		resolver: zodResolver(reportSchema),
 		defaultValues: {
 			date: new Date(),
 			time: "",
@@ -46,8 +35,11 @@ export default function LaporanIndexForm() {
 		},
 	});
 
-	const onSubmit = (values: LaporanData) => {
-		console.log(values);
+	const { mutate } = useCreateReport();
+
+	const onSubmit = (values: reportData) => {
+		mutate(values);
+		form.reset();
 	};
 
 	return (
