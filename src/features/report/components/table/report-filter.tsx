@@ -26,10 +26,10 @@ export default function ReportFilter({
 }: ReportFilterProps) {
 	return (
 		<div className="flex flex-col md:flex-row items-center justify-between w-full text-sm gap-4">
-			<div className="flex flex-colmd:flex-row gap-4 items-center w-full">
+			<div className="flex flex-col md:flex-row gap-4 items-center w-full">
 				{!isUserOnly && (
 					<div className="relative w-full ">
-						<Input placeholder="Cari ..." className="pl-8 w-full" />
+						<Input placeholder="Cari Petugas ..." className="pl-8 w-full" />
 						<div className="absolute  top-1/2 left-2 transform -translate-y-1/2">
 							<Search className="w-4 h-4" />
 						</div>

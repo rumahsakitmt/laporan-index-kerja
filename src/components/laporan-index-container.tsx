@@ -58,7 +58,7 @@ export default function LaporanIndexContainer() {
 						Buat Laporan
 					</Button>
 				</DrawerTrigger>
-				<DrawerContent className="h-screen max-h-screen">
+				<DrawerContent>
 					<DrawerHeader>
 						<DrawerTitle className="text-center">
 							Form Laporan Index Kerja

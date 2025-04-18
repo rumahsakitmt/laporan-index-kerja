@@ -6,8 +6,8 @@ export default async function Home() {
 	const currentUser = await getAuthSession();
 	return (
 		<main className="space-y-4">
-			<ReportFilter isUserOnly={true} role={currentUser?.user.role ?? ""} />
-			<ReportTable />
+			<ReportFilter role={currentUser?.user.role ?? ""} />
+			<ReportTable isShowAction={false} />
 		</main>
 	);
 }

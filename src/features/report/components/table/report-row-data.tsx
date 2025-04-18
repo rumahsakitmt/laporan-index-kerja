@@ -5,7 +5,7 @@ import React from "react";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { useGetReports } from "../../query/get-reports";
 import { format } from "date-fns";
-import { allowedRole, getReadableDuration } from "@/lib/utils";
+import { allowedRole } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { CircleCheck, CircleX, Loader } from "lucide-react";
 
@@ -15,14 +15,21 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
+
 import ReportTableAction from "./report-table-action";
 import { useAuth } from "@/provider/auth-provider";
+import { useSheetStore } from "../../hooks/use-toggle-report-sheet";
 
 interface ReportRowDataProps {
 	userId?: string;
+	isShowAction?: boolean;
 }
 
-export default function ReportRowData({ userId }: ReportRowDataProps) {
+export default function ReportRowData({
+	userId,
+	isShowAction = true,
+}: ReportRowDataProps) {
+	const { openSheet } = useSheetStore();
 	const session = useAuth();
 	const { data: reports, isLoading } = useGetReports({ userId: userId ?? "" });
 
@@ -44,7 +51,11 @@ export default function ReportRowData({ userId }: ReportRowDataProps) {
 	return (
 		<>
 			{reports.map((report) => (
-				<TableRow key={report.id}>
+				<TableRow
+					key={report.id}
+					onClick={() => openSheet(report.id)}
+					className="cursor-pointer"
+				>
 					<TableCell>
 						{format(new Date(report.date ?? new Date()), "dd/MM/yyyy")}
 					</TableCell>
@@ -70,7 +81,9 @@ export default function ReportRowData({ userId }: ReportRowDataProps) {
 							{report.status}
 						</Badge>
 					</TableCell>
-					<TableCell>{report.user?.name.split(" ")[0]}</TableCell>
+					<TableCell className="text-center">
+						{report.user?.name.split(" ")[0]}
+					</TableCell>
 					<TableCell>
 						<TooltipProvider>
 							<Tooltip>
@@ -87,29 +100,9 @@ export default function ReportRowData({ userId }: ReportRowDataProps) {
 							</Tooltip>
 						</TooltipProvider>
 					</TableCell>
-					<TableCell>
-						<TooltipProvider>
-							<Tooltip>
-								<TooltipTrigger className="text-start">
-									<p className="w-32 truncate">{report.needs}</p>
-								</TooltipTrigger>
-								<TooltipContent
-									side="bottom"
-									sideOffset={0}
-									className="max-w-44 p-4 bg-background border text-foreground"
-								>
-									<p>{report.needs ?? "-"}</p>
-								</TooltipContent>
-							</Tooltip>
-						</TooltipProvider>
-					</TableCell>
-					<TableCell>
-						<p>{getReadableDuration(report.time)}</p>
-						<p className="text-xs text-muted-foreground">{report.time}</p>
-					</TableCell>
-					{allowedRole(session?.session?.user.role ?? "") && (
+					{allowedRole(session?.session?.user.role ?? "") && isShowAction && (
 						<TableCell className="text-center">
-							<ReportTableAction />
+							<ReportTableAction reportId={report.id} />
 						</TableCell>
 					)}
 				</TableRow>
