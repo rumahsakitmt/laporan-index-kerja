@@ -5,7 +5,8 @@ import { db } from "@/db";
 import { account, session, user, verification } from "@/db/schema";
 
 export const auth = betterAuth({
-	// TODO: link to database
+	// biome-ignore lint/style/noNonNullAssertion: <explanation>
+	secret: process.env.BETTER_AUTH_SECRET!,
 	emailAndPassword: {
 		enabled: true,
 		async sendResetPassword(data, request) {
