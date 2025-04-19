@@ -11,25 +11,50 @@ import {
 	FormControl,
 	FormField,
 	FormItem,
-	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { useCreateRoom } from "../../query/create-room";
-import { Plus } from "lucide-react";
+import { Loader, PenLine, Plus } from "lucide-react";
+import { useEditRoomFormStore } from "../../hooks/use-edit-room-form";
+import { useGetRoom } from "../../query/get-room";
+import { useEditRoom } from "../../query/edit-room";
 
 export default function RoomForm() {
-	const { mutate } = useCreateRoom();
+
+	const { roomId, reset } = useEditRoomFormStore();
+	const { data: room, isLoading } = useGetRoom(roomId);
+
+
+	const { mutate, isPending:addPending } = useCreateRoom();
+	const { mutate: editMutate, isPending: editPending} = useEditRoom()
+
 	const form = useForm<roomData>({
 		resolver: zodResolver(roomSchema),
 		defaultValues: {
-			name: "",
+			name: room?.name ?? "",
 		},
 	});
 
+	React.useEffect(() => {
+		if (room) {
+			form.setValue("name", room.name);
+		}
+	}, [room, form]);
+
 	const onSubmit = (values: roomData) => {
+		if(roomId) {
+			editMutate({
+				roomId,
+				name: values.name,
+			})
+			reset()
+			form.setValue("name", "");
+		} else {
 		mutate(values);
+		}
+
 
 		form.reset();
 	};
@@ -56,9 +81,36 @@ export default function RoomForm() {
 						</FormItem>
 					)}
 				/>
-				<Button type="submit" className="w-max">
-					<Plus /> Tambah
+				<Button type="submit" className="w-[120px]">
+				{
+					addPending || editPending ? <Loader className="animate-spin"/>
+					:
+						<>
+					{roomId ? (
+						<>
+							<PenLine/> Edit
+						</>
+					) : (
+						<>
+							<Plus/> Tambah
+						</>
+					)}
+						</>
+				}
+
 				</Button>
+				{!!roomId && (
+					<Button
+						onClick={() => {
+							reset();
+							form.setValue("name", "");
+						}}
+						type="button"
+						variant="outline"
+					>
+						Batal
+					</Button>
+				)}
 			</form>
 		</Form>
 	);

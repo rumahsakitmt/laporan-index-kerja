@@ -19,6 +19,8 @@ export const Report = sqliteTable("report", {
 	updatedAt: integer({ mode: "timestamp" }).default(sql`(CURRENT_TIMESTAMP)`),
 });
 
+export type ReportType = typeof Report.$inferSelect;
+
 export const reportRelations = relations(Report, ({ one }) => ({
 	room: one(Room, {
 		fields: [Report.roomId],
@@ -32,11 +34,12 @@ export const reportRelations = relations(Report, ({ one }) => ({
 
 export const Room = sqliteTable("room", {
 	id: int("id").primaryKey({ autoIncrement: true }),
-	code: text("code"),
 	name: text("name").notNull(),
 	createdAt: integer({ mode: "timestamp" }).default(sql`(CURRENT_TIMESTAMP)`),
 	updatedAt: integer({ mode: "timestamp" }).default(sql`(CURRENT_TIMESTAMP)`),
 });
+
+export type RoomType = typeof Room.$inferSelect;
 
 export const RoomRelations = relations(Room, ({ many }) => ({
 	reports: many(Report),

@@ -52,25 +52,23 @@ export default async function MainNavigation() {
 					<DropdownMenuContent align="end">
 						<DropdownMenuLabel>{session.user.name}</DropdownMenuLabel>
 						<DropdownMenuSeparator />
-						{allowedRole(session.user.role ?? "") ? (
-							<Link href={`/laporan/${session.user.id}`}>
-								<DropdownMenuItem>
-									<NotebookPen />
-									Laporanku
-								</DropdownMenuItem>
-							</Link>
-						) : (
-							<DropdownMenuItem disabled={true}>
-								<NotebookPen />
-								Laporanku
-							</DropdownMenuItem>
+						{allowedRole(session.user.role ?? "") && (
+							<>
+								<Link href={`/laporan/${session.user.id}`}>
+									<DropdownMenuItem>
+										<NotebookPen />
+										Laporanku
+									</DropdownMenuItem>
+								</Link>
+
+								<Link href="/ruangan">
+									<DropdownMenuItem>
+										<DoorOpen />
+										Ruangan
+									</DropdownMenuItem>
+								</Link>
+							</>
 						)}
-						<Link href="/ruangan">
-							<DropdownMenuItem>
-								<DoorOpen />
-								Ruangan
-							</DropdownMenuItem>
-						</Link>
 						<DropdownMenuItem>
 							<User2 />
 							Profile

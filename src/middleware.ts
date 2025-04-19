@@ -77,5 +77,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-	matcher: ["/laporan/:path*"],
+	matcher: ["/laporan/:path*", "/ruangan"],
 };

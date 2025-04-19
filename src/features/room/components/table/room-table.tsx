@@ -14,6 +14,7 @@ export function RoomTable() {
 				<TableRow>
 					<TableHead className="w-[80px]">#</TableHead>
 					<TableHead>Nama Ruangan</TableHead>
+					<TableHead className="text-center">Perbaikan</TableHead>
 					<TableHead className="text-center">Action</TableHead>
 				</TableRow>
 			</TableHeader>
