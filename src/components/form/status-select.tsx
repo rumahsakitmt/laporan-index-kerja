@@ -27,7 +27,9 @@ interface StatusSelectProps {
 }
 
 export default function StatusSelect({ form }: StatusSelectProps) {
-	const [status, setStatus] = React.useState("selesai");
+	const [status, setStatus] = React.useState(
+		form.getValues("status") ?? "selesai",
+	);
 	return (
 		<div className="space-y-4">
 			<FormField

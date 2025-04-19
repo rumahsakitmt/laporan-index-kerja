@@ -1,6 +1,7 @@
 import { client } from "@/lib/rpc";
 import { useQuery } from "@tanstack/react-query";
 import type { InferResponseType } from "hono";
+import { useQueryReportStore } from "../hooks/use-report-query";
 
 const $get = client.api.reports.$get;
 export type ReportResponse = InferResponseType<typeof $get, 200>;
@@ -10,12 +11,17 @@ interface query {
 }
 
 export function useGetReports(queryParam?: query) {
+	const { state } = useQueryReportStore();
 	const query = useQuery<ReportResponse, Error>({
-		queryKey: ["reports", { ...queryParam }],
+		queryKey: ["reports", { ...queryParam }, { ...state }],
 		queryFn: async () => {
 			const res = await $get({
 				query: {
 					userId: queryParam?.userId,
+					date: state.date?.toString(),
+					q: state.q,
+					roomId: state.roomId,
+					status: state.status,
 				},
 			});
 			if (!res.ok) {

@@ -12,6 +12,24 @@ export const reportSchema = z.object({
 
 export const queryReport = z.object({
 	userId: z.string().optional(),
+	q: z.string().optional(),
+	date: z.coerce.date().optional(),
+	dateFrom: z.coerce
+		.date()
+		.default(() => {
+			const now = new Date();
+			return new Date(now.getFullYear(), now.getMonth(), 1);
+		})
+		.optional(),
+	dateTo: z.coerce
+		.date()
+		.default(() => {
+			const now = new Date();
+			return new Date(now.getFullYear(), now.getMonth() + 1, 0);
+		})
+		.optional(),
+	status: z.string().optional(),
+	roomId: z.string().optional(),
 });
 
 export type reportData = z.infer<typeof reportSchema>;

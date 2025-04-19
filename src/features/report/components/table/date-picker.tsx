@@ -12,9 +12,10 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover";
+import { useQueryReportStore } from "../../hooks/use-report-query";
 
 export function DatePicker() {
-	const [date, setDate] = React.useState<Date>();
+	const { setState, state } = useQueryReportStore();
 
 	return (
 		<Popover>
@@ -22,20 +23,19 @@ export function DatePicker() {
 				<Button
 					variant={"outline"}
 					className={cn(
-						"flex-1 text-left font-normal",
-						!date && "text-muted-foreground",
+						" text-left font-normal ",
+						!state.date && "text-muted-foreground",
 					)}
 				>
 					<CalendarIcon />
-					{date ? format(date, "PPP") : <span>Pick a date</span>}
+					{state.date ? format(state.date, "PPP") : <span>Tanggal</span>}
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent className="w-auto p-0" align="start">
 				<Calendar
 					mode="single"
-					selected={date}
-					onSelect={setDate}
-					initialFocus
+					selected={state.date}
+					onSelect={(e) => setState({ date: e })}
 				/>
 			</PopoverContent>
 		</Popover>

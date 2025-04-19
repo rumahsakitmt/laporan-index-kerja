@@ -5,13 +5,13 @@ import type { InferResponseType } from "hono";
 const $get = client.api.reports[":reportId"].$get;
 export type ReportResponse = InferResponseType<typeof $get, 200>;
 
-export function useGetReport(reportId: number) {
+export function useGetReport(reportId: number | undefined) {
 	const query = useQuery<ReportResponse, Error>({
-		queryKey: ["report", reportId],
+		queryKey: ["reports", reportId],
 		queryFn: async () => {
 			const res = await $get({
 				param: {
-					reportId: reportId.toString(),
+					reportId: reportId ? reportId.toString() : "",
 				},
 			});
 			if (!res.ok) {
@@ -20,6 +20,7 @@ export function useGetReport(reportId: number) {
 
 			return await res.json();
 		},
+		enabled: !!reportId,
 	});
 
 	return query;

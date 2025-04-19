@@ -4,18 +4,42 @@ import { queryReport, reportSchema } from "../schema";
 import { db } from "@/db";
 import { Report, Room, user } from "@/db/schema";
 import type { Variables } from "@/app/api/[[...route]]/route";
-import { and, desc, eq, sql, type SQL } from "drizzle-orm";
+import { and, desc, eq, like, or, type SQL } from "drizzle-orm";
 import { z } from "zod";
 
 const app = new Hono<Variables>()
 	.get("/", zValidator("query", queryReport), async (c) => {
 		const query = c.req.valid("query");
-
 		const conditions: SQL<unknown>[] = [];
 
 		if (query.userId) {
 			conditions.push(eq(Report.userId, query.userId));
 		}
+
+		if (query.status) {
+			conditions.push(eq(Report.status, query.status));
+		}
+
+		if (query.roomId) {
+			conditions.push(eq(Report.roomId, +query.roomId));
+		}
+
+		if (query.q) {
+			const searchTerm = `%${query.q}%`;
+			conditions.push(
+				or(
+					like(Report.problem, searchTerm),
+					like(user.name, searchTerm),
+				) as SQL<unknown>,
+			);
+		}
+
+		if (query.date) {
+			conditions.push(eq(Report.date, new Date(query.date)));
+		}
+
+		const whereCondition =
+			conditions.length > 0 ? and(...conditions) : undefined;
 
 		const reports = await db
 			.select({
@@ -36,10 +60,10 @@ const app = new Hono<Variables>()
 				},
 			})
 			.from(Report)
-			.orderBy(desc(Report.date))
 			.leftJoin(user, eq(user.id, Report.userId))
 			.leftJoin(Room, eq(Room.id, Report.roomId))
-			.where(conditions.length > 0 ? and(...conditions) : sql`1=1`);
+			.where(whereCondition)
+			.orderBy(desc(Report.date));
 
 		return c.json(reports);
 	})

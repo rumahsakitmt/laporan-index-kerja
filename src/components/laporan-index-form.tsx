@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
 	Form,
@@ -11,18 +11,32 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Send } from "lucide-react";
+
 import TimeRangePicker from "./form/time-picker";
 import RoomSelect from "./form/room-select";
 import { DatePicker } from "./form/date-picker";
 import StatusSelect from "./form/status-select";
-import { Send } from "lucide-react";
 import { type reportData, reportSchema } from "@/features/report/schema";
 import { useCreateReport } from "@/features/report/query/create-report";
+import { useGetReport } from "@/features/report/query/get-report";
+import { useEditReport } from "@/features/report/query/edit-report";
+import { useEditSheetStore } from "@/features/report/hooks/use-edit-report";
 
-export default function LaporanIndexForm() {
+interface LaporanIndexFormProps {
+	reportId?: number;
+}
+
+export default function LaporanIndexForm({ reportId }: LaporanIndexFormProps) {
+	const { data: report, isLoading } = useGetReport(reportId);
+	const { mutate: createReport } = useCreateReport();
+	const { mutate: editReport } = useEditReport(reportId);
+	const { closeSheet } = useEditSheetStore();
+
+	const [formKey, setFormKey] = React.useState(0);
+
 	const form = useForm<reportData>({
 		resolver: zodResolver(reportSchema),
 		defaultValues: {
@@ -32,20 +46,57 @@ export default function LaporanIndexForm() {
 			problem: "",
 			needs: "",
 			status: "",
+			notes: "",
 		},
 	});
 
-	const { mutate } = useCreateReport();
+	useEffect(() => {
+		if (reportId && report) {
+			form.reset({
+				date: new Date(report.date ?? new Date()),
+				time: report.time ?? "",
+				room: report.room?.id.toString() ?? "",
+				problem: report.problem ?? "",
+				needs: report.needs ?? "",
+				status: report.status ?? "",
+				notes: report.notes ?? "",
+			});
+
+			setTimeout(() => setFormKey((prev) => prev + 1), 0);
+		}
+	}, [reportId, report, form]);
 
 	const onSubmit = (values: reportData) => {
-		mutate(values);
+		if (reportId) {
+			editReport(values);
+		} else {
+			createReport(values);
+		}
+
+		closeSheet();
+
 		form.reset();
 	};
 
+	if (reportId && isLoading) {
+		return (
+			<div className="flex justify-center p-4">Loading report data...</div>
+		);
+	}
+
+	if (reportId && !report) {
+		return <div className="flex justify-center p-4">Report not found</div>;
+	}
+
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+			<form
+				key={formKey}
+				onSubmit={form.handleSubmit(onSubmit)}
+				className="space-y-4"
+			>
 				<DatePicker form={form} />
+
 				<FormField
 					control={form.control}
 					name="time"
@@ -53,13 +104,15 @@ export default function LaporanIndexForm() {
 						<FormItem>
 							<FormLabel>Waktu</FormLabel>
 							<FormControl>
+								{/* TODO: match the time picker value with the db value */}
 								<TimeRangePicker onChange={field.onChange} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
 					)}
 				/>
-				<RoomSelect form={form} />
+
+				<RoomSelect form={form} key={`room-${formKey}`} />
 
 				<FormField
 					control={form.control}
@@ -74,6 +127,7 @@ export default function LaporanIndexForm() {
 						</FormItem>
 					)}
 				/>
+
 				<FormField
 					control={form.control}
 					name="needs"
@@ -87,11 +141,12 @@ export default function LaporanIndexForm() {
 						</FormItem>
 					)}
 				/>
-				<StatusSelect form={form} />
+
+				<StatusSelect form={form} key={`status-${formKey}`} />
 
 				<Button type="submit" className="w-full font-bold uppercase">
-					<Send />
-					Masukkan Laporan
+					<Send className="mr-2 h-4 w-4" />
+					{reportId ? "Update Laporan" : "Masukkan Laporan"}
 				</Button>
 			</form>
 		</Form>

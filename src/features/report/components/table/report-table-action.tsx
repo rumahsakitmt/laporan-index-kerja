@@ -22,6 +22,7 @@ import {
 import { Delete, Ellipsis, Eye, Loader, PenLine } from "lucide-react";
 import { useDeleteReport } from "../../query/delete-report";
 import { Button } from "@/components/ui/button";
+import { useEditSheetStore } from "../../hooks/use-edit-report";
 
 interface ReportTableActionProps {
 	reportId: number;
@@ -30,6 +31,7 @@ interface ReportTableActionProps {
 export default function ReportTableAction({
 	reportId,
 }: ReportTableActionProps) {
+	const { openSheet } = useEditSheetStore();
 	const [open, setOpen] = React.useState(false);
 	const { mutate, isPending } = useDeleteReport(reportId);
 
@@ -49,7 +51,12 @@ export default function ReportTableAction({
 					<DropdownMenuItem>
 						<Eye /> Detail
 					</DropdownMenuItem>
-					<DropdownMenuItem>
+					<DropdownMenuItem
+						onClick={(e) => {
+							e.stopPropagation();
+							openSheet(reportId);
+						}}
+					>
 						<PenLine /> Edit
 					</DropdownMenuItem>
 					<DropdownMenuSeparator />

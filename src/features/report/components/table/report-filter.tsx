@@ -1,7 +1,8 @@
+"use client";
+
 import React from "react";
 
 import { Input } from "@/components/ui/input";
-import { DatePicker } from "./date-picker";
 
 import {
 	Select,
@@ -12,8 +13,12 @@ import {
 } from "@/components/ui/select";
 
 import LaporanIndexContainer from "@/components/laporan-index-container";
-import { CheckCircle, CircleX, Loader, Search } from "lucide-react";
+import { CheckCircle, CircleX, Loader, RefreshCcw, Search } from "lucide-react";
 import { allowedRole } from "@/lib/utils";
+import RoomFilter from "./room-filter";
+import { useQueryReportStore } from "../../hooks/use-report-query";
+import { DatePicker } from "./date-picker";
+import { Button } from "@/components/ui/button";
 
 interface ReportFilterProps {
 	isUserOnly?: boolean;
@@ -24,12 +29,24 @@ export default function ReportFilter({
 	isUserOnly = false,
 	role,
 }: ReportFilterProps) {
+	const { setState, state, reset } = useQueryReportStore();
+
+	const isAnyFilterActive = Boolean(
+		state.q || state.date || state.roomId || state.status,
+	);
 	return (
 		<div className="flex flex-col md:flex-row items-center justify-between w-full text-sm gap-4">
 			<div className="flex flex-col md:flex-row gap-4 items-center w-full">
 				{!isUserOnly && (
 					<div className="relative w-full ">
-						<Input placeholder="Cari Petugas ..." className="pl-8 w-full" />
+						<Input
+							value={state.q ?? ""}
+							onChange={(e) => {
+								setState({ q: e.target.value });
+							}}
+							placeholder="Cari..."
+							className="pl-8 w-full"
+						/>
 						<div className="absolute  top-1/2 left-2 transform -translate-y-1/2">
 							<Search className="w-4 h-4" />
 						</div>
@@ -37,8 +54,14 @@ export default function ReportFilter({
 				)}
 				<div className="flex w-full items-center gap-2">
 					<DatePicker />
-					<Select>
-						<SelectTrigger className="w-[180px]">
+					<RoomFilter />
+					<Select
+						value={state.status}
+						onValueChange={(value) => {
+							setState({ status: value });
+						}}
+					>
+						<SelectTrigger className="w-full md:w-[180px]">
 							<SelectValue placeholder="Status" />
 						</SelectTrigger>
 						<SelectContent>
@@ -58,7 +81,17 @@ export default function ReportFilter({
 					</Select>
 				</div>
 			</div>
-			<div className="w-full md:w-max">
+			<div className="self-end w-max flex gap-2 items-center">
+				{isAnyFilterActive && (
+					<Button
+						className="font-normal"
+						variant="outline"
+						onClick={() => reset()}
+					>
+						<RefreshCcw />
+						Reset Filter
+					</Button>
+				)}
 				{allowedRole(role) && <LaporanIndexContainer />}
 			</div>
 		</div>

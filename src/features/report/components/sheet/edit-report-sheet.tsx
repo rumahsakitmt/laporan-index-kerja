@@ -18,16 +18,17 @@ import {
 	DrawerHeader,
 	DrawerTitle,
 } from "@/components/ui/drawer";
-import { useSheetStore } from "../../hooks/use-toggle-report-sheet";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import ReportDetail from "./report-detail";
 
 import { Button } from "@/components/ui/button";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useEditSheetStore } from "../../hooks/use-edit-report";
+import LaporanIndexForm from "@/components/laporan-index-form";
 
-export default function ReportSheet() {
-	const { sheet, closeSheet } = useSheetStore();
+export default function EditReportSheet() {
+	const { sheet, closeSheet } = useEditSheetStore();
 	const isDesktop = useMediaQuery("(min-width: 768px)");
 
 	if (isDesktop) {
@@ -40,7 +41,9 @@ export default function ReportSheet() {
 							<SheetDescription>Detail Laporan Index Kerja</SheetDescription>
 						</SheetHeader>
 					</VisuallyHidden>
-					<ReportDetail />
+					<div className="p-4">
+						<LaporanIndexForm reportId={sheet.reportId} />
+					</div>
 				</SheetContent>
 			</Sheet>
 		);
@@ -56,7 +59,9 @@ export default function ReportSheet() {
 					</DrawerHeader>
 				</VisuallyHidden>
 				<ScrollArea>
-					<ReportDetail />
+					<div className="p-4">
+						<LaporanIndexForm reportId={sheet.reportId} />
+					</div>
 				</ScrollArea>
 				<DrawerFooter>
 					<DrawerClose asChild>
