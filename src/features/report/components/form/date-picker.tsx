@@ -33,11 +33,12 @@ export function DatePicker({ form }: DatePickerProps) {
 			render={({ field }) => (
 				<FormItem className="flex flex-col">
 					<FormLabel>Tanggal</FormLabel>
-					<Popover>
+					<Popover modal={true}>
 						<PopoverTrigger asChild>
 							<FormControl>
 								<Button
 									variant={"outline"}
+
 									className={cn(
 										"w-full pl-3 text-left font-normal",
 										!field.value && "text-muted-foreground",
@@ -52,11 +53,16 @@ export function DatePicker({ form }: DatePickerProps) {
 								</Button>
 							</FormControl>
 						</PopoverTrigger>
-						<PopoverContent className="w-full p-0" align="start">
+						<PopoverContent forceMount className="w-full p-0 z-[9999]" align="start">
 							<Calendar
 								mode="single"
 								selected={field.value}
-								onSelect={field.onChange}
+								onSelect={(date) => {
+									field.onChange(date)
+								}}
+								disabled={(date) =>
+									date > new Date() || date < new Date("2020-01-01")
+								}
 								initialFocus
 							/>
 						</PopoverContent>

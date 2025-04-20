@@ -25,7 +25,7 @@ import { Button } from "@/components/ui/button";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useEditSheetStore } from "../../hooks/use-edit-report";
-import LaporanIndexForm from "@/components/laporan-index-form";
+import LaporanIndexForm from "@/features/report/components/form/report-form";
 
 export default function EditReportSheet() {
 	const { sheet, closeSheet } = useEditSheetStore();

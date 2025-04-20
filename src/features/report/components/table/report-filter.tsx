@@ -12,7 +12,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 
-import LaporanIndexContainer from "@/components/laporan-index-container";
+import ReportFormSheet from "@/features/report/components/report-form-sheet";
 import { CheckCircle, CircleX, Loader, RefreshCcw, Search } from "lucide-react";
 import { allowedRole } from "@/lib/utils";
 import RoomFilter from "./room-filter";
@@ -35,10 +35,9 @@ export default function ReportFilter({
 		state.q || state.date || state.roomId || state.status,
 	);
 	return (
-		<div className="flex flex-col md:flex-row items-center justify-between w-full text-sm gap-4">
-
+		<div className="flex flex-col  items-center justify-between w-full text-sm gap-4">
 			<div className="self-end w-max flex gap-2 items-center">
-				{allowedRole(role) && <LaporanIndexContainer />}
+				{allowedRole(role) && <ReportFormSheet />}
 			</div>
 			<div className="flex flex-col md:flex-row gap-4 items-center w-full">
 				{!isUserOnly && (

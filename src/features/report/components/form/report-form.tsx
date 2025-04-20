@@ -13,26 +13,27 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Send } from "lucide-react";
+import { Loader, Send } from "lucide-react";
 
-import TimeRangePicker from "./form/time-picker";
-import RoomSelect from "./form/room-select";
-import { DatePicker } from "./form/date-picker";
-import StatusSelect from "./form/status-select";
+import TimeRangePicker from "./time-picker";
+import RoomSelect from "./room-select";
+import { DatePicker } from "./date-picker";
+import StatusSelect from "./status-select";
 import { type reportData, reportSchema } from "@/features/report/schema";
 import { useCreateReport } from "@/features/report/query/create-report";
 import { useGetReport } from "@/features/report/query/get-report";
 import { useEditReport } from "@/features/report/query/edit-report";
 import { useEditSheetStore } from "@/features/report/hooks/use-edit-report";
 
-interface LaporanIndexFormProps {
+
+interface ReportFormProps {
 	reportId?: number;
 }
 
-export default function LaporanIndexForm({ reportId }: LaporanIndexFormProps) {
+export default function ReportForm({ reportId }: ReportFormProps) {
 	const { data: report, isLoading } = useGetReport(reportId);
-	const { mutate: createReport } = useCreateReport();
-	const { mutate: editReport } = useEditReport(reportId);
+	const { mutate: createReport, isPending: createPending } = useCreateReport();
+	const { mutate: editReport, isPending: editPending } = useEditReport(reportId);
 	const { closeSheet } = useEditSheetStore();
 
 	const [formKey, setFormKey] = React.useState(0);
@@ -96,7 +97,6 @@ export default function LaporanIndexForm({ reportId }: LaporanIndexFormProps) {
 				className="space-y-4"
 			>
 				<DatePicker form={form} />
-
 				<FormField
 					control={form.control}
 					name="time"
@@ -104,7 +104,6 @@ export default function LaporanIndexForm({ reportId }: LaporanIndexFormProps) {
 						<FormItem>
 							<FormLabel>Waktu</FormLabel>
 							<FormControl>
-								{/* TODO: match the time picker value with the db value */}
 								<TimeRangePicker onChange={field.onChange} />
 							</FormControl>
 							<FormMessage />
@@ -145,7 +144,10 @@ export default function LaporanIndexForm({ reportId }: LaporanIndexFormProps) {
 				<StatusSelect form={form} key={`status-${formKey}`} />
 
 				<Button type="submit" className="w-full font-bold uppercase">
-					<Send className="mr-2 h-4 w-4" />
+					{
+						editPending || createPending ? <Loader className="mr-2- h-4 w-4 animate-spin" /> :
+							<Send className="mr-2 h-4 w-4" />
+					}
 					{reportId ? "Update Laporan" : "Masukkan Laporan"}
 				</Button>
 			</form>

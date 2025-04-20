@@ -12,17 +12,19 @@ import {
 } from "@/components/ui/drawer";
 
 import {
-	Dialog,
-	DialogContent,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from "@/components/ui/dialog";
+	Sheet,
+	SheetContent,
+	SheetDescription,
+	SheetHeader,
+	SheetTitle,
+	SheetTrigger,
+} from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button";
-import LaporanIndexForm from "./laporan-index-form";
+import ReportForm from "./form/report-form";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ArrowLeft, NotebookPen } from "lucide-react";
 import { useMediaQuery } from "@/hooks/use-media-query";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 export default function LaporanIndexContainer() {
 	const [open, setOpen] = React.useState(false);
@@ -30,22 +32,28 @@ export default function LaporanIndexContainer() {
 
 	if (isDesktop) {
 		return (
-			<Dialog open={open} onOpenChange={setOpen}>
-				<DialogTrigger asChild>
+			<Sheet open={open} onOpenChange={setOpen}>
+				<SheetTrigger asChild>
 					<Button size="sm" className="w-full md:w-max">
 						<NotebookPen />
 						Buat Laporan
 					</Button>
-				</DialogTrigger>
-				<DialogContent className="sm:max-w-[425px]">
-					<DialogHeader>
-						<DialogTitle>Form Laporan Index Kerja</DialogTitle>
-					</DialogHeader>
-					<ScrollArea className="px-8 overflow-y-auto">
-						<LaporanIndexForm />
+				</SheetTrigger>
+				<SheetContent>
+					<SheetHeader>
+						<SheetTitle>Form Laporan Index Kerja IT</SheetTitle>
+						<VisuallyHidden>
+							<SheetDescription>
+								This action cannot be undone. This will permanently delete your account
+								and remove your data from our servers.
+							</SheetDescription>
+						</VisuallyHidden>
+					</SheetHeader>
+					<ScrollArea className="px-8 py-4 overflow-y-auto">
+						<ReportForm />
 					</ScrollArea>
-				</DialogContent>
-			</Dialog>
+				</SheetContent>
+			</Sheet>
 		);
 	}
 
@@ -58,14 +66,14 @@ export default function LaporanIndexContainer() {
 						Buat Laporan
 					</Button>
 				</DrawerTrigger>
-				<DrawerContent>
+				<DrawerContent className="min-h-[90%]">
 					<DrawerHeader>
 						<DrawerTitle className="text-center">
 							Form Laporan Index Kerja
 						</DrawerTitle>
 					</DrawerHeader>
 					<ScrollArea className="px-8 overflow-y-auto">
-						<LaporanIndexForm />
+						<ReportForm />
 					</ScrollArea>
 					<DrawerFooter>
 						<DrawerClose asChild>
