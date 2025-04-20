@@ -35,6 +35,30 @@ export const app = new Hono<Variables>()
 			return c.json(profiles[0]);
 		},
 	)
+	.get(
+		"/users/:userId",
+		zValidator(
+			"param",
+			z.object({
+				userId: z.string(),
+			}),
+		),
+		async (c) => {
+			const { userId } = c.req.valid("param");
+			const profiles = await db.select().from(user).where(eq(user.id, userId));
+
+			if (profiles.length === 0) {
+				return c.json(
+					{
+						message: "User not found",
+					},
+					404,
+				);
+			}
+
+			return c.json(profiles[0]);
+		},
+	)
 	.put(
 		"/users/role/:userId",
 		zValidator(
@@ -113,7 +137,7 @@ export const app = new Hono<Variables>()
 			const { userId } = c.req.valid("param");
 			const currentUser = c.var.user;
 
-			if (!currentUser || currentUser.role !== "admin") {
+			if (!currentUser) {
 				return c.json(
 					{
 						message: "Unauthorized",
