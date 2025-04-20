@@ -69,10 +69,10 @@ export default async function MainNavigation() {
 								</Link>
 							</>
 						)}
-						<DropdownMenuItem>
+						{/* <DropdownMenuItem>
 							<User2 />
 							Profile
-						</DropdownMenuItem>
+						</DropdownMenuItem> */}
 						<SignOutButton />
 					</DropdownMenuContent>
 				</DropdownMenu>
