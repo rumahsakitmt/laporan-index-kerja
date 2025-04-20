@@ -27,17 +27,29 @@ export default function TableRowData() {
 	}
 
 	return (
-		<>
-			{rooms.map((room, idx) => (
-				<TableRow key={room.id}>
-					<TableCell>{idx + 1}</TableCell>
-					<TableCell>{room.name}</TableCell>
-					<TableCell className="text-center">{room.reports.length}x</TableCell>
-					<TableCell className="flex items-center gap-4 justify-center">
-						<RoomTableAction roomId={room.id} />
+		rooms.length > 0 ?
+			(
+				<>
+					{rooms.map((room, idx) => (
+						<TableRow key={room.id}>
+							<TableCell>{idx + 1}</TableCell>
+							<TableCell>{room.name}</TableCell>
+							<TableCell className="text-center">{room.reports.length}x</TableCell>
+							<TableCell className="flex items-center gap-4 justify-center">
+								<RoomTableAction roomId={room.id} />
+							</TableCell>
+						</TableRow>
+					))}
+				</>
+
+			) : (
+				<TableRow>
+					<TableCell colSpan={5}>
+						<div className="w-full text-center flex items-center gap-2 justify-center py-4">
+							Tidak ada data<span className="text-muted-foreground">¯\_(ツ)_/¯</span>
+						</div>
 					</TableCell>
 				</TableRow>
-			))}
-		</>
+			)
 	);
 }

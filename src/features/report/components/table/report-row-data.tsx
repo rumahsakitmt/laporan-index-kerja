@@ -7,7 +7,7 @@ import { useGetReports } from "../../query/get-reports";
 import { format } from "date-fns";
 import { allowedRole } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { CircleCheck, CircleX, Loader, TriangleAlert } from "lucide-react";
+import { CircleCheck, CircleX, Loader, Rabbit, TriangleAlert } from "lucide-react";
 
 import {
 	Tooltip,
@@ -50,64 +50,76 @@ export default function ReportRowData({
 	}
 
 	return (
-		<>
-			{reports.map((report) => (
-				<TableRow
-					key={report.id}
-					onClick={() => openSheet(report.id)}
-					className="cursor-pointer"
-				>
-					<TableCell>
-						{format(new Date(report.date ?? new Date()), "dd/MM/yyyy")}
-					</TableCell>
-					<TableCell>{report.room?.name}</TableCell>
-					<TableCell className="text-center">
-						<Badge
-							className="w-full capitalize"
-							variant={
-								report.status === "selesai"
-									? "outline-success"
-									: report.status === "ditunda"
-										? "outline-wait"
-										: "outline-danger"
-							}
+		reports.length > 0 ?
+			(
+
+				<>
+					{reports.map((report) => (
+						<TableRow
+							key={report.id}
+							onClick={() => openSheet(report.id)}
+							className="cursor-pointer"
 						>
-							{report.status === "selesai" ? (
-								<CircleCheck />
-							) : report.status === "ditunda" ? (
-								<Loader />
-							) : (
-								<CircleX />
-							)}
-							{report.status}
-						</Badge>
-					</TableCell>
-					<TableCell className="text-center">
-						{report.user?.name.split(" ")[0]}
-					</TableCell>
-					<TableCell>
-						<TooltipProvider>
-							<Tooltip>
-								<TooltipTrigger className="text-start">
-									<p className="w-32 truncate">{report.problem}</p>
-								</TooltipTrigger>
-								<TooltipContent
-									side="bottom"
-									sideOffset={0}
-									className="max-w-44 p-4 bg-background border text-foreground"
+							<TableCell>
+								{format(new Date(report.date ?? new Date()), "dd/MM/yyyy")}
+							</TableCell>
+							<TableCell>{report.room?.name}</TableCell>
+							<TableCell className="text-center">
+								<Badge
+									className="w-full capitalize"
+									variant={
+										report.status === "selesai"
+											? "outline-success"
+											: report.status === "ditunda"
+												? "outline-wait"
+												: "outline-danger"
+									}
 								>
-									<p>{report.problem}</p>
-								</TooltipContent>
-							</Tooltip>
-						</TooltipProvider>
+									{report.status === "selesai" ? (
+										<CircleCheck />
+									) : report.status === "ditunda" ? (
+										<Loader />
+									) : (
+										<CircleX />
+									)}
+									{report.status}
+								</Badge>
+							</TableCell>
+							<TableCell className="text-center">
+								{report.user?.name.split(" ")[0]}
+							</TableCell>
+							<TableCell>
+								<TooltipProvider>
+									<Tooltip>
+										<TooltipTrigger className="text-start">
+											<p className="w-32 truncate">{report.problem}</p>
+										</TooltipTrigger>
+										<TooltipContent
+											side="bottom"
+											sideOffset={0}
+											className="max-w-44 p-4 bg-background border text-foreground"
+										>
+											<p>{report.problem}</p>
+										</TooltipContent>
+									</Tooltip>
+								</TooltipProvider>
+							</TableCell>
+							{allowedRole(session?.session?.user.role ?? "") && isShowAction && (
+								<TableCell className="text-center">
+									<ReportTableAction reportId={report.id} />
+								</TableCell>
+							)}
+						</TableRow>
+					))}
+				</>
+			) : (
+				<TableRow>
+					<TableCell colSpan={5}>
+						<div className="w-full text-center flex items-center gap-2 justify-center py-4">
+							Tidak ada data<span className="text-muted-foreground">¯\_(ツ)_/¯</span>
+						</div>
 					</TableCell>
-					{allowedRole(session?.session?.user.role ?? "") && isShowAction && (
-						<TableCell className="text-center">
-							<ReportTableAction reportId={report.id} />
-						</TableCell>
-					)}
 				</TableRow>
-			))}
-		</>
+			)
 	);
 }
