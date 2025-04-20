@@ -11,6 +11,30 @@ export const app = new Hono<Variables>()
 		const profiles = await db.select().from(user).orderBy(asc(user.name));
 		return c.json(profiles);
 	})
+	.get(
+		"/users/:userId",
+		zValidator(
+			"param",
+			z.object({
+				userId: z.string(),
+			}),
+		),
+		async (c) => {
+			const { userId } = c.req.valid("param");
+			const profiles = await db.select().from(user).where(eq(user.id, userId));
+
+			if (profiles.length === 0) {
+				return c.json(
+					{
+						message: "User not found",
+					},
+					404,
+				);
+			}
+
+			return c.json(profiles[0]);
+		},
+	)
 	.put(
 		"/users/role/:userId",
 		zValidator(
@@ -22,7 +46,7 @@ export const app = new Hono<Variables>()
 		zValidator(
 			"json",
 			z.object({
-				role: z.string().optional(),
+				role: z.string(),
 			}),
 		),
 		async (c) => {
@@ -63,6 +87,65 @@ export const app = new Hono<Variables>()
 				return c.json(
 					{
 						message: "Failed to update user role.",
+					},
+					500,
+				);
+			}
+		},
+	)
+	.put(
+		"/users/:userId",
+		zValidator(
+			"param",
+			z.object({
+				userId: z.string(),
+			}),
+		),
+		zValidator(
+			"json",
+			z.object({
+				name: z.string(),
+				image: z.string().optional(),
+			}),
+		),
+		async (c) => {
+			const validForm = c.req.valid("json");
+			const { userId } = c.req.valid("param");
+			const currentUser = c.var.user;
+
+			if (!currentUser || currentUser.role !== "admin") {
+				return c.json(
+					{
+						message: "Unauthorized",
+					},
+					401,
+				);
+			}
+
+			try {
+				const updatedUser = await db
+					.update(user)
+					.set({ name: validForm.name, image: validForm.image })
+					.where(eq(user.id, userId))
+					.returning();
+
+				if (updatedUser.length === 0) {
+					return c.json(
+						{
+							message: "User not found.",
+						},
+						404,
+					);
+				}
+
+				return c.json({
+					message: "User has been updated.",
+				});
+			} catch (error) {
+				console.error("Failed to update user :", error);
+				return c.json(
+					{
+						message: "Failed to update user.",
 					},
 					500,
 				);

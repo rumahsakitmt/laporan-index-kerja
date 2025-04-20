@@ -1,18 +1,16 @@
-import ProfileCard from '@/features/profile/component/profile-card'
-import UsersTable from '@/features/profile/component/users-table'
 import React from 'react'
+import ProfileForm from '@/features/profile/component/profile-form'
+import { getAuthSession } from '@/lib/auth-context'
 
-export default function ProfilePage() {
+export default async function ProfilePage() {
+  const session = await getAuthSession()
+  const user = session?.user
+
   return (
-    <main >
-      <div className='flex gap-4'>
-        <div className='w-xl'>
-          <ProfileCard />
-        </div>
-        <div className='w-full border rounded-xl'>
-          <UsersTable />
-        </div>
-      </div>
-    </main>
+    <ProfileForm user={{
+      id: user?.id ?? "",
+      image: user?.image ?? "",
+      name: user?.name ?? ""
+    }} />
   )
 }
