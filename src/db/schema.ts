@@ -6,7 +6,6 @@ export const Report = sqliteTable("report", {
 	date: integer({ mode: "timestamp" }),
 	time: text("time").notNull(),
 	roomId: integer("room_id")
-		.notNull()
 		.references(() => Room.id, { onDelete: "set null" }),
 	userId: text("user_id")
 		.notNull()

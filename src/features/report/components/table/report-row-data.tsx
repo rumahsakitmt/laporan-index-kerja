@@ -7,7 +7,7 @@ import { useGetReports } from "../../query/get-reports";
 import { format } from "date-fns";
 import { allowedRole } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { CircleCheck, CircleX, Loader } from "lucide-react";
+import { CircleCheck, CircleX, Loader, TriangleAlert } from "lucide-react";
 
 import {
 	Tooltip,
@@ -19,6 +19,7 @@ import {
 import ReportTableAction from "./report-table-action";
 import { useAuth } from "@/provider/auth-provider";
 import { useSheetStore } from "../../hooks/use-toggle-report-sheet";
+import ReportTableSkeleton from "../../skeleton/report-table-skeleton";
 
 interface ReportRowDataProps {
 	userId?: string;
@@ -34,16 +35,16 @@ export default function ReportRowData({
 	const { data: reports, isLoading } = useGetReports({ userId: userId ?? "" });
 
 	if (isLoading) {
-		return (
-			<TableRow>
-				<TableCell>loading..</TableCell>
-			</TableRow>
-		);
+		return <ReportTableSkeleton />
 	}
 	if (!reports) {
 		return (
 			<TableRow>
-				<TableCell>no data</TableCell>
+				<TableCell colSpan={5}>
+					<div className="flex items-center justify-center text-red-500 gap-2 py-4">
+						<TriangleAlert className="w-4 h-4" /> Something went wrong.
+					</div>
+				</TableCell>
 			</TableRow>
 		);
 	}

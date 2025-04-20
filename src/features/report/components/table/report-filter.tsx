@@ -36,6 +36,10 @@ export default function ReportFilter({
 	);
 	return (
 		<div className="flex flex-col md:flex-row items-center justify-between w-full text-sm gap-4">
+
+			<div className="self-end w-max flex gap-2 items-center">
+				{allowedRole(role) && <LaporanIndexContainer />}
+			</div>
 			<div className="flex flex-col md:flex-row gap-4 items-center w-full">
 				{!isUserOnly && (
 					<div className="relative w-full ">
@@ -80,19 +84,20 @@ export default function ReportFilter({
 						</SelectContent>
 					</Select>
 				</div>
-			</div>
-			<div className="self-end w-max flex gap-2 items-center">
-				{isAnyFilterActive && (
-					<Button
-						className="font-normal"
-						variant="outline"
-						onClick={() => reset()}
-					>
-						<RefreshCcw />
-						Reset Filter
-					</Button>
-				)}
-				{allowedRole(role) && <LaporanIndexContainer />}
+				<div className="self-start">
+					{isAnyFilterActive && (
+						<Button
+							className="font-normal"
+							variant="outline"
+							onClick={() => reset()}
+						>
+							<RefreshCcw />
+							Reset Filter
+						</Button>
+					)}
+
+				</div>
+
 			</div>
 		</div>
 	);

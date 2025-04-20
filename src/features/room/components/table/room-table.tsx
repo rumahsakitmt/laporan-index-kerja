@@ -12,7 +12,7 @@ export function RoomTable() {
 		<Table>
 			<TableHeader>
 				<TableRow>
-					<TableHead className="w-[80px]">#</TableHead>
+					<TableHead className="w-[50px]">#</TableHead>
 					<TableHead>Nama Ruangan</TableHead>
 					<TableHead className="text-center">Perbaikan</TableHead>
 					<TableHead className="text-center">Action</TableHead>

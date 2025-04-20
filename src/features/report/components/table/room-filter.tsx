@@ -8,13 +8,14 @@ import {
 } from "@/components/ui/select";
 import { useGetRooms } from "@/features/room/query/get-rooms";
 import { useQueryReportStore } from "../../hooks/use-report-query";
+import ReportRoomSkeleton from "../../skeleton/report-room-skeleton";
 
 export default function RoomFilter() {
 	const { setState, state } = useQueryReportStore();
 	const { data: rooms, isLoading } = useGetRooms();
 
 	if (isLoading) {
-		return <div>loading...</div>;
+		return <ReportRoomSkeleton />
 	}
 
 	if (!rooms) {
@@ -23,7 +24,7 @@ export default function RoomFilter() {
 
 	return (
 		<Select value={state.roomId} onValueChange={(e) => setState({ roomId: e })}>
-			<SelectTrigger className="w-fulll md:w-[180px]">
+			<SelectTrigger className="w-full md:w-[180px]">
 				<SelectValue placeholder="Ruangan" />
 			</SelectTrigger>
 			<SelectContent>

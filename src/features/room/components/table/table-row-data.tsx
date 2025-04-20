@@ -5,26 +5,27 @@ import React from "react";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { useGetRooms } from "../../query/get-rooms";
 import RoomTableAction from "./room-table-action";
+import RoomTableSkeleton from "../skeleton/room-table-skeleton";
+import { TriangleAlert } from "lucide-react";
 
 export default function TableRowData() {
 	const { data: rooms, isLoading } = useGetRooms();
 
 	if (isLoading) {
-		return (
-			<TableRow>
-				<TableCell>loading..</TableCell>
-			</TableRow>
-		);
+		return <RoomTableSkeleton />
 	}
 	if (!rooms) {
 		return (
 			<TableRow>
-				<TableCell>no data</TableCell>
+				<TableCell colSpan={4}>
+					<div className="flex items-center justify-center text-red-500 gap-2 py-4">
+						<TriangleAlert className="w-4 h-4" /> Something went wrong.
+					</div>
+				</TableCell>
 			</TableRow>
 		);
 	}
 
-	console.log(rooms);
 	return (
 		<>
 			{rooms.map((room, idx) => (
