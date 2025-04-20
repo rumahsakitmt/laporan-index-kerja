@@ -14,7 +14,7 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { Slash } from "lucide-react";
 
-export default async function page({ params }: { params: { userId: string } }) {
+export default async function page({ params }: { params: Promise<{ userId: string }> }) {
 	const { userId } = await params;
 
 	const session = await auth.api.getSession({
