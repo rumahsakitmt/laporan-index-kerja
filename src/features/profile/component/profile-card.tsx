@@ -43,15 +43,17 @@ export default async function ProfileCard() {
             </div>
             <ChevronRight className='w-5 h-5 text-muted-foreground' />
           </li>
-          <li className='w-full p-2 border rounded-xl flex items-center hover:bg-accent justify-between pl-3 hover:bg-'>
-            <div className='flex items-center gap-1 text-sm'>
-              <Users className='w-5 h-5' />
-              <span>
-                Users
-              </span>
-            </div>
-            <ChevronRight className='w-5 h-5 text-muted-foreground' />
-          </li>
+          {user?.role === "admin" &&
+            <li className='w-full p-2 border rounded-xl flex items-center hover:bg-accent justify-between pl-3 hover:bg-'>
+              <div className='flex items-center gap-1 text-sm'>
+                <Users className='w-5 h-5' />
+                <span>
+                  Users
+                </span>
+              </div>
+              <ChevronRight className='w-5 h-5 text-muted-foreground' />
+            </li>
+          }
         </ul>
       </CardContent>
       <CardFooter>

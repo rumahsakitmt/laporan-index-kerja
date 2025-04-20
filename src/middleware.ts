@@ -55,9 +55,9 @@ export async function middleware(request: NextRequest) {
 	}
 
 	// Redirect if user role is not allowed
-	if (!allowedRole(session.user.role ?? "")) {
-		return NextResponse.redirect(homeUrl);
-	}
+	// if (!allowedRole(session.user.role ?? "")) {
+	// 	return NextResponse.redirect(homeUrl);
+	// }
 
 	// Check if user is trying to access their own reports
 	if (requestUrl.pathname.startsWith("/laporan/")) {
@@ -67,7 +67,11 @@ export async function middleware(request: NextRequest) {
 			const requestedUserId = urlParts[2];
 
 			// If userId in URL doesn't match the logged-in userId, redirect to home
-			if (requestedUserId && requestedUserId !== session.user.id) {
+			if (
+				requestedUserId &&
+				requestedUserId !== session.user.id &&
+				allowedRole(session.user.role ?? "")
+			) {
 				return NextResponse.redirect(homeUrl);
 			}
 		}

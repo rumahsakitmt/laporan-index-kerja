@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 
 import report from "@/features/report/server";
 import room from "@/features/room/server";
+import profile from "@/features/profile/server";
 
 export type Variables = {
 	Variables: {
@@ -28,7 +29,10 @@ app.use("*", async (c, next) => {
 	return await next();
 });
 
-const routes = app.route("/reports", report).route("/rooms", room);
+const routes = app
+	.route("/reports", report)
+	.route("/rooms", room)
+	.route("/profile", profile);
 
 export const GET = handle(app);
 export const POST = handle(app);
