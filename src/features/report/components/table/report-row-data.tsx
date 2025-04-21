@@ -20,6 +20,7 @@ import ReportTableAction from "./report-table-action";
 import { useAuth } from "@/provider/auth-provider";
 import { useSheetStore } from "../../hooks/use-toggle-report-sheet";
 import ReportTableSkeleton from "../../skeleton/report-table-skeleton";
+import { Button } from "@/components/ui/button";
 
 interface ReportRowDataProps {
 	userId?: string;
@@ -57,11 +58,15 @@ export default function ReportRowData({
 					{reports.map((report) => (
 						<TableRow
 							key={report.id}
-							onClick={() => openSheet(report.id)}
 							className="cursor-pointer"
 						>
-							<TableCell>
-								{format(new Date(report.date ?? new Date()), "dd/MM/yyyy")}
+							<TableCell >
+								<Button
+									onClick={() => openSheet(report.id)}
+									variant="link"
+								>
+									{format(new Date(report.date ?? new Date()), "dd/MM/yyyy")}
+								</Button>
 							</TableCell>
 							<TableCell>{report.room?.name}</TableCell>
 							<TableCell className="text-center">

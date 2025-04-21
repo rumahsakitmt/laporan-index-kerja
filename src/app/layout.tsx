@@ -6,6 +6,7 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import type { Session } from "@/lib/auth-client";
 import { AuthProvider } from "@/provider/auth-provider";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -32,14 +33,22 @@ export default async function RootLayout({
 	})) as Session | null;
 
 	return (
-		<html lang="en">
-			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-			>
-				<Providers>
-					<AuthProvider initialSession={session}>{children}</AuthProvider>
-				</Providers>
-			</body>
-		</html>
+		<>
+			<html lang="en" suppressHydrationWarning>
+				<body
+					className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+				>
+					<ThemeProvider
+						attribute="class"
+						defaultTheme="dark"
+						disableTransitionOnChange
+					>
+						<Providers>
+							<AuthProvider initialSession={session}>{children}</AuthProvider>
+						</Providers>
+					</ThemeProvider>
+				</body>
+			</html>
+		</>
 	);
 }

@@ -16,6 +16,7 @@ import SignOutButton from "./sign-out-button";
 import Link from "next/link";
 import GoogleSigninButton from "./google-signin-button";
 import { allowedRole } from "@/lib/utils";
+import { ModeToggle } from "./toogle-mode";
 
 export default async function MainNavigation() {
 	const session = await auth.api.getSession({
@@ -39,50 +40,53 @@ export default async function MainNavigation() {
 				</div>
 			</Link>
 
-			{session ? (
-				<DropdownMenu>
-					<DropdownMenuTrigger>
-						<Avatar>
-							<AvatarImage src={session.user.image ?? ""} />
-							<AvatarFallback>
-								{session.user.name.substring(0, 2)}
-							</AvatarFallback>
-						</Avatar>
-					</DropdownMenuTrigger>
-					<DropdownMenuContent align="end">
-						<DropdownMenuLabel>{session.user.name}</DropdownMenuLabel>
-						<DropdownMenuSeparator />
-						{allowedRole(session.user.role ?? "") && (
-							<>
-								<Link href={`/laporan/${session.user.id}`}>
-									<DropdownMenuItem>
-										<NotebookPen />
-										Laporanku
-									</DropdownMenuItem>
-								</Link>
+			<div className="flex items-center gap-2">
+				{session ? (
+					<DropdownMenu>
+						<DropdownMenuTrigger>
+							<Avatar>
+								<AvatarImage src={session.user.image ?? ""} />
+								<AvatarFallback>
+									{session.user.name.substring(0, 2)}
+								</AvatarFallback>
+							</Avatar>
+						</DropdownMenuTrigger>
+						<DropdownMenuContent align="end">
+							<DropdownMenuLabel>{session.user.name}</DropdownMenuLabel>
+							<DropdownMenuSeparator />
+							{allowedRole(session.user.role ?? "") && (
+								<>
+									<Link href={`/laporan/${session.user.id}`}>
+										<DropdownMenuItem>
+											<NotebookPen />
+											Laporanku
+										</DropdownMenuItem>
+									</Link>
 
-								<Link href="/ruangan">
-									<DropdownMenuItem>
-										<DoorOpen />
-										Ruangan
-									</DropdownMenuItem>
-								</Link>
-							</>
-						)}
-						<Link href="/profile">
-							<DropdownMenuItem>
-								<User2 />
-								Profile
-							</DropdownMenuItem>
-						</Link>
-						<SignOutButton />
-					</DropdownMenuContent>
-				</DropdownMenu>
-			) : (
-				<div className="flex items-center gap-2">
-					<GoogleSigninButton />
-				</div>
-			)}
+									<Link href="/ruangan">
+										<DropdownMenuItem>
+											<DoorOpen />
+											Ruangan
+										</DropdownMenuItem>
+									</Link>
+								</>
+							)}
+							<Link href="/profile">
+								<DropdownMenuItem>
+									<User2 />
+									Profile
+								</DropdownMenuItem>
+							</Link>
+							<SignOutButton />
+						</DropdownMenuContent>
+					</DropdownMenu>
+				) : (
+					<div className="flex items-center gap-2">
+						<GoogleSigninButton />
+					</div>
+				)}
+				<ModeToggle />
+			</div>
 		</nav>
 	);
 }
