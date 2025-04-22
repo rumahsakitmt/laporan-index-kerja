@@ -13,12 +13,13 @@ import {
 } from "@/components/ui/select";
 
 import ReportFormSheet from "@/features/report/components/report-form-sheet";
-import { CheckCircle, CircleX, Loader, RefreshCcw, Search } from "lucide-react";
+import { ChartLine, CheckCircle, CircleX, Loader, RefreshCcw, Search } from "lucide-react";
 import { allowedRole } from "@/lib/utils";
 import RoomFilter from "./room-filter";
 import { useQueryReportStore } from "../../hooks/use-report-query";
 import { DatePicker } from "./date-picker";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import Link from "next/link";
 
 interface ReportFilterProps {
 	isUserOnly?: boolean;
@@ -36,9 +37,20 @@ export default function ReportFilter({
 	);
 	return (
 		<div className="flex flex-col  items-center justify-between w-full text-sm gap-4">
-			<div className="self-end w-max flex gap-2 items-center">
-				{allowedRole(role) && <ReportFormSheet />}
-			</div>
+			{
+				allowedRole(role) && (
+					<div className="self-end w-max flex gap-2 items-center">
+						<Link className={buttonVariants({
+							variant: "outline",
+							size: "sm"
+						})} href="/grafik-lik">
+							<ChartLine />
+							Grafik LIK
+						</Link>
+						<ReportFormSheet />
+					</div>
+				)
+			}
 			<div className="flex flex-col md:flex-row gap-4 items-center w-full">
 				{!isUserOnly && (
 					<div className="relative w-full ">
@@ -83,8 +95,8 @@ export default function ReportFilter({
 						</SelectContent>
 					</Select>
 				</div>
-				<div className="self-start">
-					{isAnyFilterActive && (
+				{isAnyFilterActive && (
+					<div className="self-start">
 						<Button
 							className="font-normal"
 							variant="outline"
@@ -93,9 +105,9 @@ export default function ReportFilter({
 							<RefreshCcw />
 							Reset Filter
 						</Button>
-					)}
+					</div>
+				)}
 
-				</div>
 
 			</div>
 		</div>

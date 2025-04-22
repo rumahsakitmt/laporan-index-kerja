@@ -29,6 +29,7 @@ export async function ReportTable({
 						Status
 					</TableHead>
 					<TableHead className="text-center">Petugas</TableHead>
+					<TableHead className="w-40 text-center">Masalah</TableHead>
 					{allowedRole(currentUser?.user.role ?? "") && isShowAction && (
 						<TableHead className="text-center">Aksi</TableHead>
 					)}

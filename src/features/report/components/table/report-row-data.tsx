@@ -10,6 +10,14 @@ import { Badge } from "@/components/ui/badge";
 import { CircleCheck, CircleX, Loader, TriangleAlert } from "lucide-react";
 
 
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from "@/components/ui/tooltip"
+
+
 import ReportTableAction from "./report-table-action";
 import { useAuth } from "@/provider/auth-provider";
 import { useSheetStore } from "../../hooks/use-toggle-report-sheet";
@@ -87,6 +95,22 @@ export default function ReportRowData({
 							</TableCell>
 							<TableCell className="text-center">
 								{report.user?.name.split(" ")[0]}
+							</TableCell>
+							<TableCell>
+								<TooltipProvider>
+									<Tooltip>
+										<TooltipTrigger className="text-start">
+											<p className="w-32 truncate">{report.problem}</p>
+										</TooltipTrigger>
+										<TooltipContent
+											side="bottom"
+											sideOffset={0}
+											className="max-w-44 p-4 bg-background border text-foreground"
+										>
+											<p>{report.problem}</p>
+										</TooltipContent>
+									</Tooltip>
+								</TooltipProvider>
 							</TableCell>
 							{allowedRole(session?.session?.user.role ?? "") && isShowAction && (
 								<TableCell className="text-center">
