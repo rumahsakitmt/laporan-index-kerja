@@ -7,14 +7,8 @@ import { useGetReports } from "../../query/get-reports";
 import { format } from "date-fns";
 import { allowedRole } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { CircleCheck, CircleX, Loader, Rabbit, TriangleAlert } from "lucide-react";
+import { CircleCheck, CircleX, Loader, TriangleAlert } from "lucide-react";
 
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipProvider,
-	TooltipTrigger,
-} from "@/components/ui/tooltip";
 
 import ReportTableAction from "./report-table-action";
 import { useAuth } from "@/provider/auth-provider";
