@@ -58,12 +58,13 @@ export default function ReportRowData({
 					{reports.map((report) => (
 						<TableRow
 							key={report.id}
-							className="cursor-pointer"
 						>
 							<TableCell >
 								<Button
 									onClick={() => openSheet(report.id)}
 									variant="link"
+									size="sm"
+									className="pl-0"
 								>
 									{format(new Date(report.date ?? new Date()), "dd/MM/yyyy")}
 								</Button>
@@ -71,7 +72,7 @@ export default function ReportRowData({
 							<TableCell>{report.room?.name}</TableCell>
 							<TableCell className="text-center">
 								<Badge
-									className="w-full capitalize"
+									className="w-full text-xs flex items py-[2px]"
 									variant={
 										report.status === "selesai"
 											? "outline-success"
@@ -92,22 +93,6 @@ export default function ReportRowData({
 							</TableCell>
 							<TableCell className="text-center">
 								{report.user?.name.split(" ")[0]}
-							</TableCell>
-							<TableCell>
-								<TooltipProvider>
-									<Tooltip>
-										<TooltipTrigger className="text-start">
-											<p className="w-32 truncate">{report.problem}</p>
-										</TooltipTrigger>
-										<TooltipContent
-											side="bottom"
-											sideOffset={0}
-											className="max-w-44 p-4 bg-background border text-foreground"
-										>
-											<p>{report.problem}</p>
-										</TooltipContent>
-									</Tooltip>
-								</TooltipProvider>
 							</TableCell>
 							{allowedRole(session?.session?.user.role ?? "") && isShowAction && (
 								<TableCell className="text-center">
