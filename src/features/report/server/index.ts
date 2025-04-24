@@ -6,6 +6,7 @@ import { Report, Room, user } from "@/db/schema";
 import type { Variables } from "@/app/api/[[...route]]/route";
 import { and, desc, eq, like, or, type SQL } from "drizzle-orm";
 import { z } from "zod";
+import { addDays } from "date-fns";
 
 const app = new Hono<Variables>()
 	.get("/", zValidator("query", queryReport), async (c) => {
@@ -35,7 +36,12 @@ const app = new Hono<Variables>()
 		}
 
 		if (query.date) {
-			conditions.push(eq(Report.date, new Date(query.date)));
+			conditions.push(
+				eq(
+					Report.date,
+					addDays(new Date(query.date), 1).toISOString().split("T")[0],
+				),
+			);
 		}
 
 		const whereCondition =
@@ -63,6 +69,7 @@ const app = new Hono<Variables>()
 			.leftJoin(user, eq(user.id, Report.userId))
 			.leftJoin(Room, eq(Room.id, Report.roomId))
 			.where(whereCondition)
+			// .limit(10)
 			.orderBy(desc(Report.date));
 
 		return c.json(reports);
@@ -120,7 +127,7 @@ const app = new Hono<Variables>()
 		const formData = c.req.valid("json");
 
 		await db.insert(Report).values({
-			date: formData.date,
+			date: formData.date.toISOString().split("T")[0],
 			time: formData.time,
 			roomId: Number(formData.room),
 			problem: formData.problem,
@@ -176,7 +183,7 @@ const app = new Hono<Variables>()
 				const result = await db
 					.update(Report)
 					.set({
-						date: formData.date,
+						date: formData.date.toISOString().split("T")[0],
 						time: formData.time,
 						roomId: Number(formData.room),
 						problem: formData.problem,

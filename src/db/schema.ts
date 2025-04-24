@@ -3,10 +3,11 @@ import { int, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const Report = sqliteTable("report", {
 	id: int("id").primaryKey({ autoIncrement: true }),
-	date: integer({ mode: "timestamp" }),
+	date: text("date").notNull(),
 	time: text("time").notNull(),
-	roomId: integer("room_id")
-		.references(() => Room.id, { onDelete: "set null" }),
+	roomId: integer("room_id").references(() => Room.id, {
+		onDelete: "set null",
+	}),
 	userId: text("user_id")
 		.notNull()
 		.references(() => user.id, { onDelete: "no action" }),

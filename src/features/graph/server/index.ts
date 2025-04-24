@@ -46,8 +46,11 @@ const app = new Hono<Variables>()
 				.where(
 					and(
 						eq(Report.userId, userId),
-						gte(Report.date, startDate),
-						lte(Report.date, endDate),
+						gte(Report.date, new Date(startDate).toISOString().split("T")[0]),
+						lte(
+							Report.date,
+							new Date(endDate).toISOString().split("T")[0] ?? "",
+						),
 					),
 				)
 				.orderBy(asc(Report.date));
