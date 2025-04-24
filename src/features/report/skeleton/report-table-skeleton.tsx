@@ -6,7 +6,7 @@ import React from 'react'
 export default function ReportTableSkeleton() {
   return (
     <TableRow >
-      <TableCell colSpan={5} >
+      <TableCell colSpan={6} >
         <div className='flex justify-center text-muted-foreground py-4'>
           <Loader className='animate-spin' />
         </div>

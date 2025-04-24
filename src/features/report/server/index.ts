@@ -2,7 +2,7 @@ import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { queryReport, reportSchema } from "../schema";
 import { db } from "@/db";
-import { Report, Room, user } from "@/db/schema";
+import { Report, Room, Task, user } from "@/db/schema";
 import type { Variables } from "@/app/api/[[...route]]/route";
 import { and, desc, eq, like, or, sql, type SQL } from "drizzle-orm";
 import { z } from "zod";
@@ -54,6 +54,11 @@ const app = new Hono<Variables>()
 				problem: Report.problem,
 				needs: Report.needs,
 				status: Report.status,
+				task: {
+					id: Task.id,
+					name: Task.name,
+					desc: Task.description,
+				},
 				notes: Report.notes,
 				user: {
 					id: user.id,
@@ -63,6 +68,7 @@ const app = new Hono<Variables>()
 			.from(Report)
 			.leftJoin(user, eq(user.id, Report.userId))
 			.leftJoin(Room, eq(Room.id, Report.roomId))
+			.leftJoin(Task, eq(Task.id, Report.taskId))
 			.where(whereCondition);
 
 		const reports = await baseQuery
@@ -110,6 +116,11 @@ const app = new Hono<Variables>()
 					time: Report.time,
 					problem: Report.problem,
 					needs: Report.needs,
+					task: {
+						id: Task.id,
+						name: Task.name,
+						desc: Task.description,
+					},
 					status: Report.status,
 					notes: Report.notes,
 					user: {
@@ -121,6 +132,7 @@ const app = new Hono<Variables>()
 				.orderBy(desc(Report.date))
 				.leftJoin(user, eq(user.id, Report.userId))
 				.leftJoin(Room, eq(Room.id, Report.roomId))
+				.leftJoin(Task, eq(Task.id, Report.taskId))
 				.where(eq(Report.id, reportId))
 				.limit(1);
 
@@ -146,6 +158,7 @@ const app = new Hono<Variables>()
 			roomId: Number(formData.room),
 			problem: formData.problem,
 			needs: formData.needs,
+			taskId: Number(formData.task),
 			status: formData.status,
 			notes: formData.notes,
 			userId: user.id,
@@ -201,6 +214,7 @@ const app = new Hono<Variables>()
 						time: formData.time,
 						roomId: Number(formData.room),
 						problem: formData.problem,
+						taskId: Number(formData.task),
 						needs: formData.needs,
 						status: formData.status,
 						notes: formData.notes,

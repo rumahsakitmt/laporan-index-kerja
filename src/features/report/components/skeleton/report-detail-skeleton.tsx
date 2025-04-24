@@ -22,6 +22,10 @@ export default function ReportDetailSkeleton() {
         <div className='flex items-center gap-1'><span>:</span>
           <Skeleton className='h-7 w-[100px]' />
         </div>
+        <p>Uraian Tugas</p>
+        <div className='flex items-center gap-1'><span>:</span>
+          <Skeleton className='h-7 w-[100px]' />
+        </div>
         <p>Masalah</p>
         <div className='flex items-center gap-1'><span>:</span>
           <Skeleton className='h-7 w-[100px]' />

@@ -15,7 +15,7 @@ import { Slash } from "lucide-react";
 
 export default function RoomPage() {
 	return (
-		<main className="space-y-4">
+		<main className="space-y-4 pb-24">
 			<Breadcrumb>
 				<BreadcrumbList>
 					<BreadcrumbItem>

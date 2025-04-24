@@ -5,6 +5,7 @@ export const reportSchema = z.object({
 	time: z.string(),
 	room: z.string(),
 	problem: z.string(),
+	task: z.string(),
 	needs: z.string(),
 	status: z.string(),
 	notes: z.string().optional(),

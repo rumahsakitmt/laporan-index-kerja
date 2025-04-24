@@ -23,13 +23,14 @@ export async function ReportTable({
 		<Table>
 			<TableHeader>
 				<TableRow>
-					<TableHead>Tanggal</TableHead>
+					<TableHead className="w-20">Tanggal</TableHead>
 					<TableHead className="w-20">Ruangan</TableHead>
 					<TableHead className="text-center w-8 text-xs md:text-sm md:w-10">
 						Status
 					</TableHead>
 					<TableHead className="text-center">Petugas</TableHead>
-					<TableHead className="w-40 text-center">Masalah</TableHead>
+					<TableHead className="w-40 text-center">Uraian Tugas</TableHead>
+					<TableHead className="w-40 text-center hidden md:block">Masalah</TableHead>
 					{allowedRole(currentUser?.user.role ?? "") && isShowAction && (
 						<TableHead className="text-center">Aksi</TableHead>
 					)}

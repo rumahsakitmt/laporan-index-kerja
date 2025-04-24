@@ -6,6 +6,7 @@ import report from "@/features/report/server";
 import room from "@/features/room/server";
 import profile from "@/features/profile/server";
 import graph from "@/features/graph/server";
+import task from "@/features/task/server";
 
 export type Variables = {
 	Variables: {
@@ -34,7 +35,9 @@ const routes = app
 	.route("/reports", report)
 	.route("/rooms", room)
 	.route("/profile", profile)
-	.route("/graph", graph);
+	.route("/graph", graph)
+	.route("/task", task)
+
 
 export const GET = handle(app);
 export const POST = handle(app);

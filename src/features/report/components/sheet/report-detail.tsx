@@ -60,6 +60,8 @@ export default function ReportDetail() {
 					</div>
 					<p className="text-sm pl-2 ml-2 border-l">Keterangan {report.status}</p>
 					<p className="text-sm md:text-base">: {report.notes || "-"}</p>
+					<p>Uraian Tugas</p>
+					<p className="text-sm md:text-base">: {report.task ? report.task.name : "-"}</p>
 					<p>Masalah</p>
 					<p className="text-sm md:text-base">: {report.problem}</p>
 					<p>Kebutuhan</p>

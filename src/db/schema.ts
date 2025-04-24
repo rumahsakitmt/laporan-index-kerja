@@ -11,6 +11,9 @@ export const Report = sqliteTable("report", {
 	userId: text("user_id")
 		.notNull()
 		.references(() => user.id, { onDelete: "no action" }),
+	taskId: integer("task_id").references(() => Task.id, {
+		onDelete: "set null",
+	}),
 	problem: text("problem").notNull(),
 	status: text("status").notNull(),
 	needs: text("needs"),
@@ -30,6 +33,10 @@ export const reportRelations = relations(Report, ({ one }) => ({
 		fields: [Report.userId],
 		references: [user.id],
 	}),
+	task: one(Task, {
+		fields: [Report.taskId],
+		references: [Task.id],
+	}),
 }));
 
 export const Room = sqliteTable("room", {
@@ -42,6 +49,19 @@ export const Room = sqliteTable("room", {
 export type RoomType = typeof Room.$inferSelect;
 
 export const RoomRelations = relations(Room, ({ many }) => ({
+	reports: many(Report),
+}));
+
+export const Task = sqliteTable("task", {
+	id: int("id").primaryKey({ autoIncrement: true }),
+	name: text("name").notNull(),
+	type: text("type").notNull(), // "main" | "additional"
+	description: text("description"),
+	createdAt: integer({ mode: "timestamp" }).default(sql`(CURRENT_TIMESTAMP)`),
+	updatedAt: integer({ mode: "timestamp" }).default(sql`(CURRENT_TIMESTAMP)`),
+});
+
+export const TaskRelations = relations(Task, ({ many }) => ({
 	reports: many(Report),
 }));
 

@@ -116,13 +116,15 @@ const app = new Hono<Variables>()
 	})
 	.put(
 		"/",
-		zValidator("json",z.object({
-			name: z.string(),
-			roomId: z.number()
-		})),
+		zValidator(
+			"json",
+			z.object({
+				name: z.string(),
+				roomId: z.number(),
+			}),
+		),
 		async (c) => {
 			const validForm = c.req.valid("json");
-
 
 			const user = c.var.user;
 
@@ -140,14 +142,17 @@ const app = new Hono<Variables>()
 				.set({
 					name: validForm.name,
 				})
-				.where(eq(Room.id, +validForm.roomId)).returning({ id: Room.id});
+				.where(eq(Room.id, +validForm.roomId))
+				.returning({ id: Room.id });
 
-
-				if(updatedRoom.length === 0) {
-					return c.json({
-						message: "Room not found"
-					}, 404)
-				}
+			if (updatedRoom.length === 0) {
+				return c.json(
+					{
+						message: "Room not found",
+					},
+					404,
+				);
+			}
 
 			return c.json({
 				message: "Room edited successfully.",

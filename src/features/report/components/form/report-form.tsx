@@ -24,6 +24,7 @@ import { useCreateReport } from "@/features/report/query/create-report";
 import { useGetReport } from "@/features/report/query/get-report";
 import { useEditReport } from "@/features/report/query/edit-report";
 import { useEditSheetStore } from "@/features/report/hooks/use-edit-report";
+import TaskSelect from "./task-select";
 
 
 interface ReportFormProps {
@@ -45,6 +46,7 @@ export default function ReportForm({ reportId }: ReportFormProps) {
 			time: "",
 			room: "",
 			problem: "",
+			task: "",
 			needs: "",
 			status: "",
 			notes: "",
@@ -57,6 +59,7 @@ export default function ReportForm({ reportId }: ReportFormProps) {
 				date: new Date(report.date ?? new Date()),
 				time: report.time ?? "",
 				room: report.room?.id.toString() ?? "",
+				task: report.task?.id.toString() ?? "",
 				problem: report.problem ?? "",
 				needs: report.needs ?? "",
 				status: report.status ?? "",
@@ -112,6 +115,7 @@ export default function ReportForm({ reportId }: ReportFormProps) {
 				/>
 
 				<RoomSelect form={form} key={`room-${formKey}`} />
+				<TaskSelect form={form} />
 
 				<FormField
 					control={form.control}
