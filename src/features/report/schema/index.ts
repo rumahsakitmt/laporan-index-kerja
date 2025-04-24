@@ -30,6 +30,8 @@ export const queryReport = z.object({
 		.optional(),
 	status: z.string().optional(),
 	roomId: z.string().optional(),
+	limit: z.coerce.number().default(10),
+	page: z.coerce.number().default(1),
 });
 
 export type reportData = z.infer<typeof reportSchema>;

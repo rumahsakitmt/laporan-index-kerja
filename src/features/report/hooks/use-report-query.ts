@@ -17,6 +17,8 @@ const initialState: QueryReportState = {
 	date: undefined,
 	status: undefined,
 	roomId: undefined,
+	limit: 10,
+	page: 1,
 };
 
 export const useQueryReportStore = create<QueryReportStore>((set) => ({

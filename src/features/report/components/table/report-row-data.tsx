@@ -35,12 +35,12 @@ export default function ReportRowData({
 }: ReportRowDataProps) {
 	const { openSheet } = useSheetStore();
 	const session = useAuth();
-	const { data: reports, isLoading } = useGetReports({ userId: userId ?? "" });
+	const { data, isLoading } = useGetReports({ userId: userId ?? "" });
 
 	if (isLoading) {
 		return <ReportTableSkeleton />
 	}
-	if (!reports) {
+	if (!data) {
 		return (
 			<TableRow>
 				<TableCell colSpan={5}>
@@ -51,6 +51,8 @@ export default function ReportRowData({
 			</TableRow>
 		);
 	}
+
+	const reports = data.reports;
 
 	return (
 		reports.length > 0 ?

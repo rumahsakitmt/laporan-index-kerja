@@ -22,6 +22,8 @@ export function useGetReports(queryParam?: query) {
 					q: state.q,
 					roomId: state.roomId,
 					status: state.status,
+					page: state.page.toString(),
+					limit: state.limit.toString(),
 				},
 			});
 			if (!res.ok) {

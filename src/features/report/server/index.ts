@@ -4,7 +4,7 @@ import { queryReport, reportSchema } from "../schema";
 import { db } from "@/db";
 import { Report, Room, user } from "@/db/schema";
 import type { Variables } from "@/app/api/[[...route]]/route";
-import { and, desc, eq, like, or, type SQL } from "drizzle-orm";
+import { and, desc, eq, like, or, sql, type SQL } from "drizzle-orm";
 import { z } from "zod";
 import { addDays } from "date-fns";
 
@@ -13,17 +13,9 @@ const app = new Hono<Variables>()
 		const query = c.req.valid("query");
 		const conditions: SQL<unknown>[] = [];
 
-		if (query.userId) {
-			conditions.push(eq(Report.userId, query.userId));
-		}
-
-		if (query.status) {
-			conditions.push(eq(Report.status, query.status));
-		}
-
-		if (query.roomId) {
-			conditions.push(eq(Report.roomId, +query.roomId));
-		}
+		if (query.userId) conditions.push(eq(Report.userId, query.userId));
+		if (query.status) conditions.push(eq(Report.status, query.status));
+		if (query.roomId) conditions.push(eq(Report.roomId, +query.roomId));
 
 		if (query.q) {
 			const searchTerm = `%${query.q}%`;
@@ -46,8 +38,11 @@ const app = new Hono<Variables>()
 
 		const whereCondition =
 			conditions.length > 0 ? and(...conditions) : undefined;
+		const limit = Number.parseInt(query.limit?.toString() || "10", 10);
+		const page = query.page || 1;
+		const offset = (page - 1) * limit;
 
-		const reports = await db
+		const baseQuery = db
 			.select({
 				id: Report.id,
 				date: Report.date,
@@ -68,11 +63,30 @@ const app = new Hono<Variables>()
 			.from(Report)
 			.leftJoin(user, eq(user.id, Report.userId))
 			.leftJoin(Room, eq(Room.id, Report.roomId))
-			.where(whereCondition)
-			// .limit(10)
-			.orderBy(desc(Report.date));
+			.where(whereCondition);
 
-		return c.json(reports);
+		const reports = await baseQuery
+			.orderBy(desc(Report.date))
+			.limit(limit)
+			.offset(offset);
+
+		const countResult = await db
+			.select({ count: sql<number>`count(*)` })
+			.from(Report)
+			.leftJoin(user, eq(user.id, Report.userId))
+			.leftJoin(Room, eq(Room.id, Report.roomId))
+			.where(whereCondition)
+			.then((rows) => rows[0]?.count || 0);
+
+		const totalPages = Math.ceil(countResult / limit);
+
+		return c.json({
+			reports,
+			page,
+			limit,
+			total: countResult,
+			totalPage: totalPages,
+		});
 	})
 	.get(
 		"/:reportId",
