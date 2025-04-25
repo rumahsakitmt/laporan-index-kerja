@@ -25,6 +25,7 @@ import { useGetReport } from "@/features/report/query/get-report";
 import { useEditReport } from "@/features/report/query/edit-report";
 import { useEditSheetStore } from "@/features/report/hooks/use-edit-report";
 import TaskSelect from "./task-select";
+import FormSkeleton from "./form-skeleton";
 
 
 interface ReportFormProps {
@@ -84,7 +85,7 @@ export default function ReportForm({ reportId }: ReportFormProps) {
 
 	if (reportId && isLoading) {
 		return (
-			<div className="flex justify-center p-4">Loading report data...</div>
+			<FormSkeleton />
 		);
 	}
 

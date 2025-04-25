@@ -59,7 +59,7 @@ export default function TaskSelect({ form }: StatusSelectProps) {
                 defaultValue={field.value}
               >
                 <SelectTrigger className="w-full h-max text-start text-wrap ">
-                  <SelectValue placeholder="Status" />
+                  <SelectValue placeholder="Uraian Tugas" />
                 </SelectTrigger>
                 <SelectContent >
                   {

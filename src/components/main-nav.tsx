@@ -8,7 +8,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { DoorOpen, Home, NotebookPen, User2 } from "lucide-react";
+import { DoorOpen, NotebookPen, User2 } from "lucide-react";
 import Image from "next/image";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
@@ -17,7 +17,6 @@ import Link from "next/link";
 import GoogleSigninButton from "./google-signin-button";
 import { allowedRole } from "@/lib/utils";
 import { ModeToggle } from "./toogle-mode";
-import { buttonVariants } from "./ui/button";
 import MainNavLink from "./main-nav-link";
 
 export default async function MainNavigation() {

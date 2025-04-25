@@ -44,8 +44,7 @@ export default function LaporanIndexContainer() {
 						<SheetTitle>Form Laporan Index Kerja IT</SheetTitle>
 						<VisuallyHidden>
 							<SheetDescription>
-								This action cannot be undone. This will permanently delete your account
-								and remove your data from our servers.
+								Laporan Index Kerja IT adalah laporan yang digunakan untuk mengukur kinerja dan produktivitas tim IT dalam suatu organisasi. Laporan ini mencakup berbagai metrik dan indikator yang relevan untuk mengevaluasi efektivitas tim IT dalam mencapai tujuan bisnis.
 							</SheetDescription>
 						</VisuallyHidden>
 					</SheetHeader>
