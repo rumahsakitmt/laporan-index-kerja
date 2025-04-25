@@ -8,7 +8,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { DoorOpen, NotebookPen, User2 } from "lucide-react";
+import { DoorOpen, Home, NotebookPen, User2 } from "lucide-react";
 import Image from "next/image";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
@@ -17,6 +17,8 @@ import Link from "next/link";
 import GoogleSigninButton from "./google-signin-button";
 import { allowedRole } from "@/lib/utils";
 import { ModeToggle } from "./toogle-mode";
+import { buttonVariants } from "./ui/button";
+import MainNavLink from "./main-nav-link";
 
 export default async function MainNavigation() {
 	const session = await auth.api.getSession({
@@ -42,44 +44,48 @@ export default async function MainNavigation() {
 
 			<div className="flex items-center gap-2">
 				{session ? (
-					<DropdownMenu>
-						<DropdownMenuTrigger>
-							<Avatar>
-								<AvatarImage src={session.user.image ?? ""} />
-								<AvatarFallback>
-									{session.user.name.substring(0, 2)}
-								</AvatarFallback>
-							</Avatar>
-						</DropdownMenuTrigger>
-						<DropdownMenuContent align="end">
-							<DropdownMenuLabel>{session.user.name}</DropdownMenuLabel>
-							<DropdownMenuSeparator />
-							{allowedRole(session.user.role ?? "") && (
-								<>
-									<Link href={`/laporan/${session.user.id}`}>
-										<DropdownMenuItem>
-											<NotebookPen />
-											Laporanku
-										</DropdownMenuItem>
-									</Link>
+					<>
+						<MainNavLink userId={session.user.id} />
+						<DropdownMenu>
+							<DropdownMenuTrigger>
+								<Avatar>
+									<AvatarImage src={session.user.image ?? ""} />
+									<AvatarFallback>
+										{session.user.name.substring(0, 2)}
+									</AvatarFallback>
+								</Avatar>
+							</DropdownMenuTrigger>
+							<DropdownMenuContent align="end">
+								<DropdownMenuLabel>{session.user.name}</DropdownMenuLabel>
+								<DropdownMenuSeparator />
+								{allowedRole(session.user.role ?? "") && (
+									<>
+										<Link href={`/laporan/${session.user.id}`}>
+											<DropdownMenuItem>
+												<NotebookPen />
+												Laporanku
+											</DropdownMenuItem>
+										</Link>
 
-									<Link href="/ruangan">
-										<DropdownMenuItem>
-											<DoorOpen />
-											Ruangan
-										</DropdownMenuItem>
-									</Link>
-								</>
-							)}
-							<Link href="/profile">
-								<DropdownMenuItem>
-									<User2 />
-									Profile
-								</DropdownMenuItem>
-							</Link>
-							<SignOutButton />
-						</DropdownMenuContent>
-					</DropdownMenu>
+										<Link href="/ruangan">
+											<DropdownMenuItem>
+												<DoorOpen />
+												Ruangan
+											</DropdownMenuItem>
+										</Link>
+									</>
+								)}
+								<Link href="/profile">
+									<DropdownMenuItem>
+										<User2 />
+										Profile
+									</DropdownMenuItem>
+								</Link>
+								<SignOutButton />
+							</DropdownMenuContent>
+						</DropdownMenu>
+					</>
+
 				) : (
 					<div className="flex items-center gap-2">
 						<GoogleSigninButton />
