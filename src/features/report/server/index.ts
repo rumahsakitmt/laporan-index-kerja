@@ -58,6 +58,7 @@ const app = new Hono<Variables>()
 					id: Task.id,
 					name: Task.name,
 					desc: Task.description,
+					type: Task.type,
 				},
 				notes: Report.notes,
 				user: {
@@ -120,6 +121,7 @@ const app = new Hono<Variables>()
 						id: Task.id,
 						name: Task.name,
 						desc: Task.description,
+						type: Task.type,
 					},
 					status: Report.status,
 					notes: Report.notes,

@@ -3,14 +3,6 @@
 import * as React from "react";
 
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
-import {
   FormControl,
   FormField,
   FormItem,
@@ -18,10 +10,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import type { UseFormReturn } from "react-hook-form";
-import { CheckCheck, CircleX, TimerIcon } from "lucide-react";
-import NotesTextarea from "./notes-textarea";
 import { useGetTasks } from "@/features/task/query/get-tasks";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useCreateTask } from "@/features/task/query/create-tasks";
+import CreatableCustomSelect from "@/components/select-createable";
 
 interface StatusSelectProps {
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -30,6 +22,7 @@ interface StatusSelectProps {
 
 export default function TaskSelect({ form }: StatusSelectProps) {
   const { data: tasks, isLoading } = useGetTasks()
+  const { mutate: createTask, isPending } = useCreateTask()
 
   if (isLoading) {
     return <div className="space-y-2">
@@ -52,30 +45,28 @@ export default function TaskSelect({ form }: StatusSelectProps) {
           <FormItem className="h-max">
             <FormLabel>Uraian Tugas</FormLabel>
             <FormControl >
-              <Select
-                onValueChange={(value) => {
-                  field.onChange(value);
+              <CreatableCustomSelect
+                onChange={(value) => {
+                  field.onChange(value)
                 }}
-                defaultValue={field.value}
-              >
-                <SelectTrigger className="w-full h-max text-start text-wrap ">
-                  <SelectValue placeholder="Uraian Tugas" />
-                </SelectTrigger>
-                <SelectContent >
-                  {
-                    tasks.map((task) => (
-                      <SelectItem key={task.id} value={task.id.toString()}>
-                        <div>
-                          {task.name}
-                          <p className="text-xs max-w-[250px]  text-wrap text-muted-foreground">
-                            {task.description}
-                          </p>
-                        </div>
-                      </SelectItem>
-                    ))
-                  }
-                </SelectContent>
-              </Select>
+                onCreate={(value) => {
+                  createTask({
+                    name: value,
+                    description: "Uraian tugas tambahan",
+                    type: "additional"
+                  })
+                }}
+                isDisabled={isPending}
+                options={tasks.map((task) => ({
+                  label: task.name,
+                  value: task.id.toString(),
+                  title: task.name,
+                  description: task.description ?? "",
+                  type: task.type as "main" | "additional",
+                }))}
+                placeholder="Pilih uraian tugas atau buat baru"
+              />
+
             </FormControl>
             <FormMessage />
           </FormItem>

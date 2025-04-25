@@ -5,7 +5,7 @@ import React from "react";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { useGetReports } from "../../query/get-reports";
 import { format } from "date-fns";
-import { allowedRole } from "@/lib/utils";
+import { allowedRole, cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { CircleCheck, CircleX, Loader, TriangleAlert } from "lucide-react";
 
@@ -30,6 +30,12 @@ export default function ReportRowData({
 	const { openSheet } = useSheetStore();
 	const session = useAuth();
 	const { data, isLoading } = useGetReports({ userId: userId ?? "" });
+
+
+	const typeColors = {
+		main: " text-emerald-600 border-emerald-200",
+		additional: "text-blue-600 border-blue-200",
+	}
 
 	if (isLoading) {
 		return <ReportTableSkeleton />
@@ -113,7 +119,10 @@ export default function ReportRowData({
 									report.task ? (
 
 										<div>
-											<p>{report.task.name}</p>
+											<div className="flex items-center gap-2">
+												<p>{report.task.name}</p>
+												<Badge className={cn(typeColors[report.task.type as keyof typeof typeColors], "rounded-full text-xs")} variant="outline">{report.task.type === "main" ? "Utama" : "Tambahan"}</Badge>
+											</div>
 											<p className="text-xs hidden md:block text-muted-foreground md:w-48 text-wrap">{report.task.desc}</p>
 										</div>
 									) : <div>-</div>
