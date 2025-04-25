@@ -1,8 +1,8 @@
 "use client"
 
-import { useState } from "react"
 import CreatableSelect from "react-select/creatable"
-import { components, SingleValue, type OptionProps, type SingleValueProps } from "react-select"
+import { components, type SingleValue, type OptionProps, type SingleValueProps } from "react-select"
+import { useTheme } from "next-themes"
 
 
 
@@ -29,7 +29,7 @@ const CustomOption = (props: OptionProps<OptionType>) => {
         <div className="flex items-center gap-2">
           <span className="font-medium">{data.label}</span>
           {data.__isNew__ ? (
-            <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-800">Baru</span>
+            <span className="text-xs px-2 py-0.5 rounded-full text-gray-800">Baru</span>
           ) : (
             <span className={`text-xs px-2 py-0.5 rounded-full ${typeColors[data.type]}`}>{data.type === "main" ? "Utama" : "Tambahan"}</span>
           )}
@@ -52,7 +52,7 @@ const CustomSingleValue = (props: SingleValueProps<OptionType>) => {
     <components.SingleValue {...props}>
       <div className={`font-medium ${data.__isNew__ ? "text-gray-700" : typeColors[data.type]}`}>
         {data.label}
-        {data.__isNew__ && <span className="ml-2 text-xs text-gray-500">(custom)</span>}
+        {data.__isNew__ && <span className="ml-2 text-xs text-foreground">(custom)</span>}
       </div>
     </components.SingleValue>
   )
@@ -76,6 +76,7 @@ export default function CreatableCustomSelect({
   value,
 }: CreatableCustomSelectProps
 ) {
+  const { theme } = useTheme()
   const onSelect = (options: SingleValue<OptionType>) => {
     if (options?.value) {
       onChange(options.value)
@@ -96,8 +97,9 @@ export default function CreatableCustomSelect({
       styles={{
         control: (base) => ({
           ...base,
+          backgroundColor: theme === "dark" ? "#141416" : "#ffffff",
           borderRadius: "0.375rem",
-          borderColor: "#e2e8f0",
+          borderColor: theme === "dark" ? "rgba(255, 255,255, 0.15)" : "#d1d5db",
           boxShadow: "none",
           "&:hover": {
             borderColor: "#cbd5e1",
@@ -105,12 +107,22 @@ export default function CreatableCustomSelect({
         }),
         menu: (base) => ({
           ...base,
+          backgroundColor: theme === "dark" ? "#141416" : "#ffffff",
           borderRadius: "0.375rem",
           overflow: "hidden",
           boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
         }),
+        option: (base, state) => ({
+          paddingLeft: "10px",
+          borderRadius: "0.375rem",
+          cursor: "pointer",
+          backgroundColor: state.isFocused ? (theme === "dark" ? "rgba(255, 255, 255, 0.1)" : "#f3f4f6") : base.backgroundColor,
+          ':active': {
+            backgroundColor: theme === "dark" ? "rgba(255,255,255, 0.2)" : "#f4f4f5",
+          }
+        }),
       }}
-      className="text-sm"
+      className="text-sm bg-background"
       placeholder={placeholder}
     />
 
