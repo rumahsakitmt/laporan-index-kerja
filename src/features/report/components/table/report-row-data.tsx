@@ -111,7 +111,7 @@ export default function ReportRowData({
 										)
 								}
 							</TableCell>
-							<TableCell className="text-start">
+							<TableCell className="text-center">
 								{report.user?.name.split(" ")[0]}
 							</TableCell>
 							<TableCell>
@@ -128,7 +128,7 @@ export default function ReportRowData({
 									) : <div>-</div>
 								}
 							</TableCell>
-							<TableCell className="hidden md:table-cell">
+							<TableCell className="hidden md:table-cell md:w-48">
 								<p>{report.problem}</p>
 							</TableCell>
 							{allowedRole(session?.session?.user.role ?? "") && isShowAction && (
