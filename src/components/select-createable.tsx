@@ -85,7 +85,7 @@ export default function CreatableCustomSelect({
     <CreatableSelect
       options={options}
       value={value}
-      onChange={onSelect}
+      onChange={(option) => onSelect(option as SingleValue<OptionType>)}
       onCreateOption={onCreate}
       components={{
         Option: CustomOption,
