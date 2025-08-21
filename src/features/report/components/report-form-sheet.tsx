@@ -18,37 +18,36 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet"
+} from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import ReportForm from "./form/report-form";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ArrowLeft, NotebookPen } from "lucide-react";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { useReportFormStore } from "../hooks/use-report-form";
 
 export default function LaporanIndexContainer() {
-  const [open, setOpen] = React.useState(false);
+  const { isOpen, open, close } = useReportFormStore();
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   const handleCloseDialog = () => {
-    setOpen(false)
-  }
+    close();
+  };
 
   if (isDesktop) {
     return (
-      <Sheet open={open} onOpenChange={setOpen}>
-        <SheetTrigger asChild>
-          <Button size="sm" className="w-full md:w-max">
-            <NotebookPen />
-            Buat Laporan
-          </Button>
-        </SheetTrigger>
+      <Sheet open={isOpen} onOpenChange={close}>
         <SheetContent>
           <SheetHeader>
             <SheetTitle>Form Laporan Index Kerja IT</SheetTitle>
             <VisuallyHidden>
               <SheetDescription>
-                Laporan Index Kerja IT adalah laporan yang digunakan untuk mengukur kinerja dan produktivitas tim IT dalam suatu organisasi. Laporan ini mencakup berbagai metrik dan indikator yang relevan untuk mengevaluasi efektivitas tim IT dalam mencapai tujuan bisnis.
+                Laporan Index Kerja IT adalah laporan yang digunakan untuk
+                mengukur kinerja dan produktivitas tim IT dalam suatu
+                organisasi. Laporan ini mencakup berbagai metrik dan indikator
+                yang relevan untuk mengevaluasi efektivitas tim IT dalam
+                mencapai tujuan bisnis.
               </SheetDescription>
             </VisuallyHidden>
           </SheetHeader>
@@ -62,13 +61,7 @@ export default function LaporanIndexContainer() {
 
   return (
     <div>
-      <Drawer>
-        <DrawerTrigger asChild>
-          <Button size="sm" className="w-full md:w-max">
-            <NotebookPen />
-            Buat Laporan
-          </Button>
-        </DrawerTrigger>
+      <Drawer open={isOpen} onOpenChange={close}>
         <DrawerContent className="min-h-[90%]">
           <DrawerHeader>
             <DrawerTitle className="text-center">
