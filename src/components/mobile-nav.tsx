@@ -32,7 +32,7 @@ export default function MobileNav({ userId }: MobileNavProps) {
   };
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-background border-t md:hidden py-4 rounded-t-4xl shadow-2xl">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-background border-t md:hidden rounded-t-4xl shadow-2xl">
       <div className="flex items-center justify-around px-4 py-2">
         <Link
           href="/"
