@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Table,
   TableBody,
@@ -6,19 +8,16 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import ReportRowData from "./report-row-data";
-import { getAuthSession } from "@/lib/auth-context";
 import { allowedRole } from "@/lib/utils";
+import { useAuth } from "@/provider/auth-provider";
 
 interface ReportTableProps {
   userId?: string;
   isShowAction?: boolean;
 }
 
-export async function ReportTable({
-  userId,
-  isShowAction = true,
-}: ReportTableProps) {
-  const currentUser = await getAuthSession();
+export function ReportTable({ userId, isShowAction = true }: ReportTableProps) {
+  const { session } = useAuth();
   return (
     <Table>
       <TableHeader>
@@ -35,7 +34,7 @@ export async function ReportTable({
           <TableHead className="w-32 text-center hidden md:block md:w-48">
             Masalah
           </TableHead>
-          {allowedRole(currentUser?.user.role ?? "") && isShowAction && (
+          {allowedRole(session?.user.role ?? "") && isShowAction && (
             <TableHead className="text-center">Aksi</TableHead>
           )}
         </TableRow>

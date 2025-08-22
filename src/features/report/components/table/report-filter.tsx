@@ -21,7 +21,6 @@ import { Button } from "@/components/ui/button";
 
 interface ReportFilterProps {
   isUserOnly?: boolean;
-  role: string;
 }
 
 export default function ReportFilter({
