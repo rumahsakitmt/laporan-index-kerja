@@ -31,14 +31,13 @@ export function DatePicker() {
           {state.date ? format(state.date, "PPP") : <span>Tanggal</span>}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0" align="start">
+      <PopoverContent className="w-auto p-0" align="end">
         <Calendar
           mode="single"
           selected={state.date}
           onSelect={(e) =>
             setState({
               date: e,
-              // Clear month filter when single date is selected
               dateFrom: undefined,
               dateTo: undefined,
             })

@@ -53,7 +53,7 @@ export function MonthPicker() {
 
   return (
     <Select value={getSelectedMonth()} onValueChange={handleMonthSelect}>
-      <SelectTrigger className="w-full md:w-[180px]">
+      <SelectTrigger className="w-full ">
         <CalendarIcon className="mr-2 h-4 w-4" />
         <SelectValue placeholder="Pilih Bulan" />
       </SelectTrigger>

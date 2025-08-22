@@ -177,11 +177,14 @@ export default function ReportCardInfinite({
 
   if (isLoading) {
     return (
-      <div className="space-y-2">
-        <Skeleton className="h-28 w-full" />
-        <Skeleton className="h-28 w-full opacity-60" />
-        <Skeleton className="h-28 w-full opacity-30" />
-        <Skeleton className="h-28 w-full opacity-10" />
+      <div className="space-y-4">
+        <Skeleton className="h-6 w-32" />
+        <div className="space-y-2">
+          <Skeleton className="h-28 w-full" />
+          <Skeleton className="h-28 w-full opacity-60" />
+          <Skeleton className="h-28 w-full opacity-30" />
+          <Skeleton className="h-28 w-full opacity-10" />
+        </div>
       </div>
     );
   }

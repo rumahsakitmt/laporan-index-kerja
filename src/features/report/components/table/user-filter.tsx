@@ -17,7 +17,7 @@ export default function UserFilter() {
   if (isLoading) {
     return (
       <Select disabled>
-        <SelectTrigger className="w-full md:w-[180px]">
+        <SelectTrigger className="w-full">
           <div className="flex items-center gap-2">
             <Loader className="w-4 h-4 animate-spin" />
             <span>Loading...</span>
@@ -30,7 +30,7 @@ export default function UserFilter() {
   if (!users) {
     return (
       <Select disabled>
-        <SelectTrigger className="w-full md:w-[180px]">
+        <SelectTrigger className="w-full">
           <SelectValue placeholder="No users available" />
         </SelectTrigger>
       </Select>
@@ -39,10 +39,10 @@ export default function UserFilter() {
 
   return (
     <Select
-      value={state.userId}
+      value={state.userId || ""}
       onValueChange={(value) => setState({ userId: value })}
     >
-      <SelectTrigger className="w-full md:w-[180px]">
+      <SelectTrigger className="w-full">
         <SelectValue placeholder="Petugas" />
       </SelectTrigger>
       <SelectContent>

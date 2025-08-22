@@ -39,7 +39,7 @@ export default function ReportFilter({
   );
   return (
     <div className="flex flex-col  items-center justify-between w-full text-sm gap-4">
-      <div className="flex flex-col md:flex-row gap-4 md:items-center w-full">
+      <div className="flex flex-col gap-4 w-full">
         {!isUserOnly && (
           <div className="relative w-full ">
             <Input
@@ -55,17 +55,17 @@ export default function ReportFilter({
             </div>
           </div>
         )}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-2 w-full">
           <MonthPicker />
           <DatePicker />
           <RoomFilter />
           <Select
-            value={state.status}
+            value={state.status || ""}
             onValueChange={(value) => {
               setState({ status: value });
             }}
           >
-            <SelectTrigger className="w-full md:w-[180px]">
+            <SelectTrigger className="w-full ">
               <SelectValue placeholder="Status" />
             </SelectTrigger>
             <SelectContent>
@@ -85,23 +85,25 @@ export default function ReportFilter({
           </Select>
 
           {!isUserOnly && (
-            <div className="col-span-2">
+            <div className="col-span-2 md:col-span-1">
               <UserFilter />
             </div>
           )}
         </div>
-        {isAnyFilterActive && (
-          <div className="self-start">
-            <Button
-              className="font-normal"
-              variant="outline"
-              onClick={() => reset()}
-            >
-              <RefreshCcw />
-              Reset Filter
-            </Button>
-          </div>
-        )}
+        <div className="self-start">
+          <Button
+            className={`font-normal transition-opacity duration-200 ${
+              isAnyFilterActive
+                ? "opacity-100"
+                : "opacity-0 pointer-events-none"
+            }`}
+            variant="outline"
+            onClick={() => reset()}
+          >
+            <RefreshCcw />
+            Reset Filter
+          </Button>
+        </div>
       </div>
     </div>
   );
