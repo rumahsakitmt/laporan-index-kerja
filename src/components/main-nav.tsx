@@ -27,7 +27,7 @@ export default async function MainNavigation() {
 
   return (
     <>
-      <nav className="w-full py-4 flex items-center justify-between">
+      <nav className="w-full p-4 px-8 flex items-center justify-between fixed top-0 left-0 right-0 z-50 bg-background/50 backdrop-blur-sm">
         <Link href="/">
           <div className="flex items-center gap-4">
             <Image

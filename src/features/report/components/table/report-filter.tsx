@@ -12,22 +12,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import {
-  ChartLine,
-  CheckCircle,
-  CircleX,
-  Loader,
-  RefreshCcw,
-  Search,
-  NotebookPen,
-} from "lucide-react";
-import { allowedRole } from "@/lib/utils";
+import { CheckCircle, CircleX, Loader, RefreshCcw, Search } from "lucide-react";
 import RoomFilter from "./room-filter";
 import { useQueryReportStore } from "../../hooks/use-report-query";
 import { DatePicker } from "./date-picker";
-import { Button, buttonVariants } from "@/components/ui/button";
-import Link from "next/link";
-import { useReportFormStore } from "../../hooks/use-report-form";
+import { Button } from "@/components/ui/button";
 
 interface ReportFilterProps {
   isUserOnly?: boolean;
@@ -36,10 +25,8 @@ interface ReportFilterProps {
 
 export default function ReportFilter({
   isUserOnly = false,
-  role,
 }: ReportFilterProps) {
   const { setState, state, reset } = useQueryReportStore();
-  const { open } = useReportFormStore();
 
   const isAnyFilterActive = Boolean(
     state.q || state.date || state.roomId || state.status

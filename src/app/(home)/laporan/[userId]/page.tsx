@@ -9,7 +9,6 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import ReportFilter from "@/features/report/components/table/report-filter";
-import { ReportTable } from "@/features/report/components/table/report-table";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { Slash } from "lucide-react";
