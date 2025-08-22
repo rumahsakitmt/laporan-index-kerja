@@ -48,16 +48,16 @@ export default function MobileNav({ userId }: MobileNavProps) {
         </Link>
 
         <Link
-          href="/grafik-lik"
+          href={`/laporan/${userId}`}
           className={cn(
             "flex flex-col items-center gap-1 p-2 rounded-lg transition-colors",
-            isActive("/grafik-lik")
+            isActive(`/laporan/${userId}`)
               ? "text-primary bg-primary/10"
               : "text-muted-foreground hover:text-foreground"
           )}
         >
-          <ChartBar className="h-5 w-5" />
-          <span className="text-xs font-medium">Grafik LIK</span>
+          <FileText className="h-5 w-5" />
+          <span className="text-xs font-medium">Laporanku</span>
         </Link>
 
         <button
@@ -72,16 +72,16 @@ export default function MobileNav({ userId }: MobileNavProps) {
         </button>
 
         <Link
-          href={`/laporan/${userId}`}
+          href="/grafik-lik"
           className={cn(
             "flex flex-col items-center gap-1 p-2 rounded-lg transition-colors",
-            isActive(`/laporan/${userId}`)
+            isActive("/grafik-lik")
               ? "text-primary bg-primary/10"
               : "text-muted-foreground hover:text-foreground"
           )}
         >
-          <FileText className="h-5 w-5" />
-          <span className="text-xs font-medium">Laporanku</span>
+          <ChartBar className="h-5 w-5" />
+          <span className="text-xs font-medium">Chart</span>
         </Link>
 
         <Link
