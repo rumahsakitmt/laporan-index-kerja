@@ -5,6 +5,7 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
+  DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
@@ -42,13 +43,7 @@ export default function LaporanIndexContainer() {
           <SheetHeader>
             <SheetTitle>Form Laporan Index Kerja IT</SheetTitle>
             <VisuallyHidden>
-              <SheetDescription>
-                Laporan Index Kerja IT adalah laporan yang digunakan untuk
-                mengukur kinerja dan produktivitas tim IT dalam suatu
-                organisasi. Laporan ini mencakup berbagai metrik dan indikator
-                yang relevan untuk mengevaluasi efektivitas tim IT dalam
-                mencapai tujuan bisnis.
-              </SheetDescription>
+              <SheetDescription>Form Laporan Index Kerja IT.</SheetDescription>
             </VisuallyHidden>
           </SheetHeader>
           <ScrollArea className="px-8 py-4 overflow-y-auto">
@@ -67,6 +62,9 @@ export default function LaporanIndexContainer() {
             <DrawerTitle className="text-center">
               Form Laporan Index Kerja
             </DrawerTitle>
+            <VisuallyHidden>
+              <DrawerDescription>Form Laporan Index Kerja IT</DrawerDescription>
+            </VisuallyHidden>
           </DrawerHeader>
           <ScrollArea className="px-8 overflow-y-auto">
             <ReportForm onHandleDialog={handleCloseDialog} />
