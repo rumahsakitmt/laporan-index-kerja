@@ -28,7 +28,7 @@ export default function ReportRowData({
   const isMobile = useMediaQuery("(max-width: 768px)");
   const { openSheet } = useSheetStore();
   const session = useAuth();
-  const { data, isLoading } = useGetReports({ userId: userId ?? "" });
+  const { data, isLoading } = useGetReports(userId ? { userId } : undefined);
 
   const typeColors = {
     main: " text-emerald-600 border-emerald-200",

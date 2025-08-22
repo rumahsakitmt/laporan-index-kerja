@@ -17,7 +17,7 @@ export function useGetReports(queryParam?: query) {
     queryFn: async () => {
       const res = await $get({
         query: {
-          userId: queryParam?.userId,
+          userId: queryParam?.userId || state.userId,
           date: state.date?.toString(),
           dateFrom: state.dateFrom?.toString(),
           dateTo: state.dateTo?.toString(),

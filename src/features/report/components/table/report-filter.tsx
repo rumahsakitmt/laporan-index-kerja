@@ -14,6 +14,7 @@ import {
 
 import { CheckCircle, CircleX, Loader, RefreshCcw, Search } from "lucide-react";
 import RoomFilter from "./room-filter";
+import UserFilter from "./user-filter";
 import { useQueryReportStore } from "../../hooks/use-report-query";
 import { DatePicker } from "./date-picker";
 import { MonthPicker } from "./month-picker";
@@ -29,7 +30,12 @@ export default function ReportFilter({
   const { setState, state, reset } = useQueryReportStore();
 
   const isAnyFilterActive = Boolean(
-    state.q || state.date || state.dateFrom || state.roomId || state.status
+    state.q ||
+      state.date ||
+      state.dateFrom ||
+      state.roomId ||
+      state.status ||
+      state.userId
   );
   return (
     <div className="flex flex-col  items-center justify-between w-full text-sm gap-4">
@@ -49,7 +55,7 @@ export default function ReportFilter({
             </div>
           </div>
         )}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
           <MonthPicker />
           <DatePicker />
           <RoomFilter />
@@ -77,6 +83,12 @@ export default function ReportFilter({
               </SelectItem>
             </SelectContent>
           </Select>
+
+          {!isUserOnly && (
+            <div className="col-span-2">
+              <UserFilter />
+            </div>
+          )}
         </div>
         {isAnyFilterActive && (
           <div className="self-start">

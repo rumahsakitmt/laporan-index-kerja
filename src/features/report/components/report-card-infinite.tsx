@@ -164,7 +164,7 @@ export default function ReportCardInfinite({
 }: ReportCardInfiniteProps) {
   const { ref, inView } = useInView();
   const { data, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage } =
-    useGetReportsInfinite({ userId });
+    useGetReportsInfinite(userId ? { userId } : undefined);
 
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {

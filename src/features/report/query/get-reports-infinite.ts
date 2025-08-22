@@ -18,7 +18,7 @@ export function useGetReportsInfinite(queryParam?: query) {
     queryFn: async ({ pageParam = 1 }) => {
       const res = await $get({
         query: {
-          userId: queryParam?.userId,
+          userId: queryParam?.userId || state.userId,
           date: state.date?.toString(),
           dateFrom: state.dateFrom?.toString(),
           dateTo: state.dateTo?.toString(),

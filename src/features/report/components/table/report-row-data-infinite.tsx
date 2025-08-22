@@ -39,7 +39,7 @@ export default function ReportRowDataInfinite({
     hasNextPage,
     fetchNextPage,
     error,
-  } = useGetReportsInfinite({ userId: userId ?? "" });
+  } = useGetReportsInfinite(userId ? { userId } : undefined);
 
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
