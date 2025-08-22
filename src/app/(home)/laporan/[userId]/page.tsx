@@ -13,6 +13,7 @@ import { ReportTable } from "@/features/report/components/table/report-table";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { Slash } from "lucide-react";
+import ReportCard from "@/features/report/components/report-card";
 
 export default async function page({
   params,
@@ -48,7 +49,7 @@ export default async function page({
       </Breadcrumb>
 
       <ReportFilter isUserOnly={true} role={session?.user.role ?? ""} />
-      <ReportTable userId={userId} />
+      <ReportCard userId={userId} />
     </main>
   );
 }
