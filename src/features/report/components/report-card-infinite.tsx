@@ -3,13 +3,15 @@
 import { format } from "date-fns";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
-import { AlertTriangle, CheckCircle, XCircle, HelpCircle } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { id } from "date-fns/locale";
 import { useGetReportsInfinite } from "../query/get-reports-infinite";
 import { ScrollToTopContainer } from "@/components/ui/scroll-to-top-container";
 import { useSheetStore } from "../hooks/use-toggle-report-sheet";
 import { getProblemIcon, getStatusIcon, getUserColor } from "../utils";
+import ReportTableAction from "./table/report-table-action";
+import { allowedRole } from "@/lib/utils";
+import { useAuth } from "@/provider/auth-provider";
 
 interface ReportCardInfiniteProps {
   userId?: string;
@@ -24,6 +26,7 @@ export default function ReportCardInfinite({
   const { data, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage } =
     useGetReportsInfinite(userId ? { userId } : undefined);
   const { openSheet } = useSheetStore();
+  const session = useAuth();
 
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
@@ -93,9 +96,13 @@ export default function ReportCardInfinite({
                     </p>
                   )}
                 </div>
-                <p className="text-sm text-muted-foreground">
-                  {report.room?.name}
-                </p>
+                <div className="flex items-center gap-2">
+                  <p className="text-sm text-muted-foreground">
+                    {report.room?.name}
+                  </p>{" "}
+                  {allowedRole(session?.session?.user.role ?? "") &&
+                    isUserOnly && <ReportTableAction reportId={report.id} />}
+                </div>
               </div>
               <div className="flex items-start gap-2 mt-2">
                 <div className="text-muted-foreground">

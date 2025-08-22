@@ -57,7 +57,7 @@ export default function LaporanIndexContainer() {
   return (
     <div>
       <Drawer open={isOpen} onOpenChange={close}>
-        <DrawerContent className="min-h-[90%]">
+        <DrawerContent className="min-h-[50%] max-h-[85%]">
           <DrawerHeader>
             <DrawerTitle className="text-center">
               Form Laporan Index Kerja
