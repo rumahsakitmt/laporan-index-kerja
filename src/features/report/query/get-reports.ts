@@ -7,32 +7,34 @@ const $get = client.api.reports.$get;
 export type ReportResponse = InferResponseType<typeof $get, 200>;
 
 interface query {
-	userId: string;
+  userId: string;
 }
 
 export function useGetReports(queryParam?: query) {
-	const { state } = useQueryReportStore();
-	const query = useQuery<ReportResponse, Error>({
-		queryKey: ["reports", { ...queryParam }, { ...state }],
-		queryFn: async () => {
-			const res = await $get({
-				query: {
-					userId: queryParam?.userId,
-					date: state.date?.toString(),
-					q: state.q,
-					roomId: state.roomId,
-					status: state.status,
-					page: state.page.toString(),
-					limit: state.limit.toString(),
-				},
-			});
-			if (!res.ok) {
-				throw new Error("Failed to get reports");
-			}
+  const { state } = useQueryReportStore();
+  const query = useQuery<ReportResponse, Error>({
+    queryKey: ["reports", { ...queryParam }, { ...state }],
+    queryFn: async () => {
+      const res = await $get({
+        query: {
+          userId: queryParam?.userId,
+          date: state.date?.toString(),
+          dateFrom: state.dateFrom?.toString(),
+          dateTo: state.dateTo?.toString(),
+          q: state.q,
+          roomId: state.roomId,
+          status: state.status,
+          page: state.page.toString(),
+          limit: state.limit.toString(),
+        },
+      });
+      if (!res.ok) {
+        throw new Error("Failed to get reports");
+      }
 
-			return await res.json();
-		},
-	});
+      return await res.json();
+    },
+  });
 
-	return query;
+  return query;
 }

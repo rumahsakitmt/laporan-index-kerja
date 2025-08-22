@@ -5,27 +5,29 @@ import type { queryReport } from "../schema";
 type QueryReportState = z.infer<typeof queryReport>;
 
 interface QueryReportStore {
-	state: QueryReportState;
+  state: QueryReportState;
 
-	setState: (newState: Partial<QueryReportState>) => void;
-	reset: () => void;
+  setState: (newState: Partial<QueryReportState>) => void;
+  reset: () => void;
 }
 
 const initialState: QueryReportState = {
-	userId: undefined,
-	q: undefined,
-	date: undefined,
-	status: undefined,
-	roomId: undefined,
-	limit: 10,
-	page: 1,
+  userId: undefined,
+  q: undefined,
+  date: undefined,
+  dateFrom: undefined,
+  dateTo: undefined,
+  status: undefined,
+  roomId: undefined,
+  limit: 10,
+  page: 1,
 };
 
 export const useQueryReportStore = create<QueryReportStore>((set) => ({
-	state: initialState,
-	setState: (newState) =>
-		set((store) => ({
-			state: { ...store.state, ...newState },
-		})),
-	reset: () => set({ state: initialState }),
+  state: initialState,
+  setState: (newState) =>
+    set((store) => ({
+      state: { ...store.state, ...newState },
+    })),
+  reset: () => set({ state: initialState }),
 }));

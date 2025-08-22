@@ -8,36 +8,43 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
 } from "@/components/ui/popover";
 import { useQueryReportStore } from "../../hooks/use-report-query";
 
 export function DatePicker() {
-	const { setState, state } = useQueryReportStore();
+  const { setState, state } = useQueryReportStore();
 
-	return (
-		<Popover>
-			<PopoverTrigger asChild>
-				<Button
-					variant={"outline"}
-					className={cn(
-						" text-left font-normal",
-						!state.date && "text-muted-foreground",
-					)}
-				>
-					<CalendarIcon />
-					{state.date ? format(state.date, "PPP") : <span>Tanggal</span>}
-				</Button>
-			</PopoverTrigger>
-			<PopoverContent className="w-auto p-0" align="start">
-				<Calendar
-					mode="single"
-					selected={state.date}
-					onSelect={(e) => setState({ date: e })}
-				/>
-			</PopoverContent>
-		</Popover>
-	);
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button
+          variant={"outline"}
+          className={cn(
+            " text-left font-normal",
+            !state.date && "text-muted-foreground"
+          )}
+        >
+          <CalendarIcon />
+          {state.date ? format(state.date, "PPP") : <span>Tanggal</span>}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0" align="start">
+        <Calendar
+          mode="single"
+          selected={state.date}
+          onSelect={(e) =>
+            setState({
+              date: e,
+              // Clear month filter when single date is selected
+              dateFrom: undefined,
+              dateTo: undefined,
+            })
+          }
+        />
+      </PopoverContent>
+    </Popover>
+  );
 }

@@ -29,16 +29,17 @@ export default async function MainNavigation() {
     <>
       <nav className="w-full p-4 px-8 flex items-center justify-between fixed top-0 left-0 right-0 z-50 bg-background/50 backdrop-blur-sm">
         <Link href="/">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
             <Image
-              src="/images/logo_mateng.png"
+              src="/images/android-chrome-512x512.png"
               width={30}
               height={30}
-              alt="Logo Mamuju Tengah"
+              alt="Logo Index Kerja IT"
+              className="rounded-md"
             />
-            <div className="text-xs font-bold flex flex-col items-start">
-              <p>Laporan Index</p>
-              <p>Kerja IT</p>
+            <div className="text-xs font-bold flex flex-col items-start uppercase">
+              <p>Laporan</p>
+              <p>Index Kerja IT</p>
             </div>
           </div>
         </Link>
