@@ -12,6 +12,7 @@ export default function Dynamic({ userId }: { userId: string }) {
       isLoading={isLoading}
       totalPage={data?.totalPage}
       currentPage={data?.page}
+      total={data?.total}
       isUserOnly={true}
     />
   );

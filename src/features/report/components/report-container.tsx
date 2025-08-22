@@ -16,6 +16,7 @@ export default function ReportContainer() {
         isLoading={isLoading}
         totalPage={data?.totalPage}
         currentPage={data?.page}
+        total={data?.total}
         isUserOnly={false}
       />
     );

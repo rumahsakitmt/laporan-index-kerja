@@ -178,6 +178,7 @@ interface ReportCardProps {
   isLoading?: boolean;
   totalPage?: number;
   currentPage?: number;
+  total?: number;
   onPageChange?: (page: number) => void;
   showPagination?: boolean;
   isUserOnly?: boolean;
@@ -188,6 +189,7 @@ export default function ReportCard({
   isLoading = false,
   totalPage = 1,
   currentPage = 1,
+  total,
   onPageChange,
   showPagination = true,
   isUserOnly = false,
@@ -223,6 +225,11 @@ export default function ReportCard({
 
   return (
     <div className="space-y-4 pb-8 flex flex-col h-full">
+      <div className="flex items-center justify-between">
+        <p className="text-sm text-muted-foreground">
+          Total Laporan: {total !== undefined ? total : reports.length}
+        </p>
+      </div>
       <div className="space-y-2 flex-1">
         {reports.map((report, index) => (
           <div
