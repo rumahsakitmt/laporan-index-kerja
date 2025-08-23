@@ -4,13 +4,6 @@ import * as React from "react";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
   type ChartConfig,
   ChartContainer,
   ChartTooltip,
@@ -19,6 +12,9 @@ import {
 import { useGetGraphRange } from "../query/get-report-range";
 import { useFilterStore } from "../hooks/use-filter-graph";
 import { Skeleton } from "@/components/ui/skeleton";
+import { format } from "date-fns";
+import { id } from "date-fns/locale";
+import { getUserChartColor } from "@/features/report/utils";
 
 const chartConfig = {
   views: {
@@ -51,66 +47,56 @@ export function BarCharComponent() {
   if (!reports || reports.length === 0) {
     return (
       <div className="w-full text-sm text-center flex flex-col gap-2 py-8">
+        <p className="font-bold">Ups, tidak ada yang bisa ditampilkan.</p>
         <p className="text-muted-foreground">
-          Ups, tidak ada yang bisa ditampilkan.
+          Silahkan pilih petugas terlebih dahulu.
         </p>
       </div>
     );
   }
 
   return (
-    <Card className="w-full">
-      <CardHeader className="flex items-center justify-between">
-        <p className="text-sm text-muted-foreground">Laporan Index Kerja</p>
-        <div className="flex font-bold">{total} L.I.K</div>
-      </CardHeader>
-      <CardContent className="px-2 sm:p-6">
-        <ChartContainer
-          config={chartConfig}
-          className="aspect-auto h-[250px] w-full"
-        >
-          <BarChart
-            accessibilityLayer
-            data={reports}
-            margin={{
-              left: 12,
-              right: 12,
+    <div className="w-full space-y-2">
+      <p className="text-sm uppercase tracking-widest">Laporan Index Kerja</p>
+      <ChartContainer
+        config={chartConfig}
+        className="aspect-auto h-[250px] w-full"
+      >
+        <BarChart accessibilityLayer data={reports}>
+          <CartesianGrid vertical={false} />
+          <XAxis
+            dataKey="date"
+            tickLine={false}
+            axisLine={false}
+            tickMargin={8}
+            minTickGap={32}
+            tickFormatter={(value) => {
+              const date = new Date(value);
+              return format(date, "dd MMM", { locale: id });
             }}
-          >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="date"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              minTickGap={32}
-              tickFormatter={(value) => {
-                const date = new Date(value);
-                return date.toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                });
-              }}
-            />
-            <ChartTooltip
-              content={
-                <ChartTooltipContent
-                  className="w-[150px]"
-                  nameKey="views"
-                  labelFormatter={(value) => {
-                    return new Date(value).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                    });
-                  }}
-                />
-              }
-            />
-            <Bar dataKey="count" fill={"var(--color-count)"} />
-          </BarChart>
-        </ChartContainer>
-      </CardContent>
-    </Card>
+          />
+          <ChartTooltip
+            content={
+              <ChartTooltipContent
+                className="w-[150px]"
+                nameKey="views"
+                labelFormatter={(value) => {
+                  return new Date(value).toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  });
+                }}
+              />
+            }
+          />
+          <Bar
+            dataKey="count"
+            fill={getUserChartColor(filter.userId ?? "")}
+            radius={10}
+          />
+        </BarChart>
+      </ChartContainer>
+    </div>
   );
 }

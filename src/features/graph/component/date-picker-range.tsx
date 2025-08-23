@@ -1,25 +1,23 @@
-"use client"
+"use client";
 
-import type * as React from "react"
-import { addDays, format } from "date-fns"
-import { CalendarIcon } from "lucide-react"
+import type * as React from "react";
+import { addDays, format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
-import { useFilterStore } from "../hooks/use-filter-graph"
-
+} from "@/components/ui/popover";
+import { useFilterStore } from "../hooks/use-filter-graph";
 
 export function DatePickerWithRange({
   className,
 }: React.HTMLAttributes<HTMLDivElement>) {
-  const { filter, setFilter } = useFilterStore()
-
+  const { filter, setFilter } = useFilterStore();
 
   return (
     <div className={cn("grid gap-2", className)}>
@@ -50,7 +48,7 @@ export function DatePickerWithRange({
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="start">
           <Calendar
-            initialFocus
+            autoFocus
             mode="range"
             defaultMonth={filter.date?.from}
             selected={filter.date}
@@ -58,14 +56,14 @@ export function DatePickerWithRange({
               setFilter("date", {
                 date: {
                   from: range?.from,
-                  to: range?.to
-                }
-              })
+                  to: range?.to,
+                },
+              });
             }}
             numberOfMonths={2}
           />
         </PopoverContent>
       </Popover>
     </div>
-  )
+  );
 }

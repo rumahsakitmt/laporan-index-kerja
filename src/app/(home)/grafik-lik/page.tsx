@@ -1,15 +1,20 @@
-import { BarCharComponent } from '@/features/graph/component/bar-chart'
-import ChartHeader from '@/features/graph/component/chart-header'
-import React from 'react'
+import React from "react";
 
+import { BarCharComponent } from "@/features/graph/component/bar-chart";
+import UserReportChart from "@/features/graph/component/user-report-chart";
+import { DatePickerWithRange } from "@/features/graph/component/date-picker-range";
 
 export default function GrafikLikComponent() {
   return (
-    <div className='space-y-4'>
-      <ChartHeader />
-      <main className='w-full'>
-        <BarCharComponent />
-      </main>
-    </div>
-  )
+    <main className="w-full space-y-4">
+      <DatePickerWithRange />
+      <div>
+        <p className="text-sm uppercase tracking-widest">
+          Grafik lik bulan ini
+        </p>
+        <UserReportChart />
+      </div>
+      <BarCharComponent />
+    </main>
+  );
 }

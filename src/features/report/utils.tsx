@@ -102,6 +102,20 @@ const userColors = [
   "bg-cyan-100 text-cyan-800 dark:bg-cyan-900 dark:text-cyan-200",
 ];
 
+// Chart colors - actual color values for charts
+const userChartColors = [
+  "#3b82f6", // blue
+  "#10b981", // green
+  "#8b5cf6", // purple
+  "#ec4899", // pink
+  "#6366f1", // indigo
+  "#eab308", // yellow
+  "#ef4444", // red
+  "#14b8a6", // teal
+  "#f97316", // orange
+  "#06b6d4", // cyan
+];
+
 export const getUserColor = (userName: string): string => {
   if (!userName) return "";
 
@@ -114,6 +128,20 @@ export const getUserColor = (userName: string): string => {
 
   const index = Math.abs(hash) % userColors.length;
   return userColors[index];
+};
+
+export const getUserChartColor = (userName: string): string => {
+  if (!userName) return "#6b7280"; // default gray
+
+  let hash = 0;
+  for (let i = 0; i < userName.length; i++) {
+    const char = userName.charCodeAt(i);
+    hash = (hash << 5) - hash + char;
+    hash = hash & hash;
+  }
+
+  const index = Math.abs(hash) % userChartColors.length;
+  return userChartColors[index];
 };
 
 export const getStatusIcon = (status: string) => {
