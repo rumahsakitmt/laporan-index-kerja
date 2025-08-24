@@ -3,12 +3,13 @@ import { Hono } from "hono";
 import { db } from "@/db";
 import { Report, user } from "@/db/schema";
 import type { Variables } from "@/app/api/[[...route]]/route";
-import { and, desc, eq, gte, lte, sql, count } from "drizzle-orm";
+import { and, desc, eq, gte, lte, sql, count, asc } from "drizzle-orm";
 import { z } from "zod";
 
 interface ReportCount {
   date: string;
   count: number;
+  reportIds: number[];
 }
 
 const app = new Hono<Variables>()
@@ -93,7 +94,7 @@ const app = new Hono<Variables>()
             )
           )
         )
-        .orderBy(desc(Report.date));
+        .orderBy(asc(Report.date));
 
       const reportCounts: ReportCount[] = userReports.reduce<ReportCount[]>(
         (acc, report) => {
@@ -106,8 +107,13 @@ const app = new Hono<Variables>()
 
           if (existingEntry) {
             existingEntry.count += 1;
+            existingEntry.reportIds.push(report.id);
           } else {
-            acc.push({ date: reportDate, count: 1 });
+            acc.push({
+              date: reportDate,
+              count: 1,
+              reportIds: [report.id],
+            });
           }
 
           return acc;

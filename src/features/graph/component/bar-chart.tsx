@@ -1,20 +1,15 @@
 "use client";
 
-import * as React from "react";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 
-import {
-  type ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
+import { type ChartConfig, ChartContainer } from "@/components/ui/chart";
 import { useGetGraphRange } from "../query/get-report-range";
 import { useFilterStore } from "../hooks/use-filter-graph";
 import { Skeleton } from "@/components/ui/skeleton";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { getUserChartColor } from "@/features/report/utils";
+import { useSheetStore } from "@/features/report/hooks/use-toggle-report-sheet";
 
 const chartConfig = {
   views: {
@@ -28,17 +23,13 @@ const chartConfig = {
 
 export function BarCharComponent() {
   const { filter } = useFilterStore();
+  const { openSheet } = useSheetStore();
 
   const { data: reports, isLoading } = useGetGraphRange({
     userId: filter.userId,
     startDate: filter.date?.from,
     endDate: filter.date?.to,
   });
-
-  const total = React.useMemo(
-    () => reports?.reduce((acc, report) => acc + report.count, 0),
-    [reports]
-  );
 
   if (isLoading) {
     return <Skeleton className="w-full h-[250px]" />;
@@ -75,25 +66,15 @@ export function BarCharComponent() {
               return format(date, "dd MMM", { locale: id });
             }}
           />
-          <ChartTooltip
-            content={
-              <ChartTooltipContent
-                className="w-[150px]"
-                nameKey="views"
-                labelFormatter={(value) => {
-                  return new Date(value).toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                    year: "numeric",
-                  });
-                }}
-              />
-            }
-          />
           <Bar
             dataKey="count"
             fill={getUserChartColor(filter.userId ?? "")}
             radius={10}
+            onClick={(data) => {
+              if (data && data.reportIds && data.reportIds.length > 0) {
+                openSheet(data.reportIds[0], data.reportIds);
+              }
+            }}
           />
         </BarChart>
       </ChartContainer>

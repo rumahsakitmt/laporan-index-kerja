@@ -22,6 +22,7 @@ import {
 import { useSheetStore } from "../../hooks/use-toggle-report-sheet";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import ReportDetail from "./report-detail";
+import ReportList from "./report-list";
 
 import { Button } from "@/components/ui/button";
 import { useMediaQuery } from "@/hooks/use-media-query";
@@ -46,22 +47,24 @@ export default function ReportSheet() {
               <SheetDescription>Detail Laporan Index Kerja</SheetDescription>
             </SheetHeader>
           </VisuallyHidden>
-          <ReportDetail />
-          <SheetFooter>
-            {pathname.startsWith("/laporan") && (
-              <>
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    openSheet(sheet.reportId);
-                  }}
-                >
-                  Edit
-                </Button>
-                <DeleteReportButton reportId={sheet.reportId} />
-              </>
-            )}
-          </SheetFooter>
+          {sheet.reportIds.length > 1 ? <ReportList /> : <ReportDetail />}
+          {sheet.reportIds.length === 1 && (
+            <SheetFooter>
+              {pathname.startsWith("/laporan") && (
+                <>
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      openSheet(sheet.reportId);
+                    }}
+                  >
+                    Edit
+                  </Button>
+                  <DeleteReportButton reportId={sheet.reportId} />
+                </>
+              )}
+            </SheetFooter>
+          )}
         </SheetContent>
       </Sheet>
     );
@@ -77,10 +80,10 @@ export default function ReportSheet() {
           </DrawerHeader>
         </VisuallyHidden>
         <ScrollArea>
-          <ReportDetail />
+          {sheet.reportIds.length > 1 ? <ReportList /> : <ReportDetail />}
         </ScrollArea>
         <DrawerFooter>
-          {pathname.startsWith("/laporan") && (
+          {sheet.reportIds.length === 1 && pathname.startsWith("/laporan") && (
             <>
               <Button
                 variant="outline"
