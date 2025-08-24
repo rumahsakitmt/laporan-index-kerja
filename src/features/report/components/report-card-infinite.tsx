@@ -9,8 +9,6 @@ import { useGetReportsInfinite } from "../query/get-reports-infinite";
 import { ScrollToTopContainer } from "@/components/ui/scroll-to-top-container";
 import { useSheetStore } from "../hooks/use-toggle-report-sheet";
 import { getProblemIcon, getStatusIcon, getUserColor } from "../utils";
-import ReportTableAction from "./table/report-table-action";
-import { allowedRole } from "@/lib/utils";
 import { useAuth } from "@/provider/auth-provider";
 
 interface ReportCardInfiniteProps {
@@ -26,7 +24,6 @@ export default function ReportCardInfinite({
   const { data, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage } =
     useGetReportsInfinite(userId ? { userId } : undefined);
   const { openSheet } = useSheetStore();
-  const session = useAuth();
 
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
@@ -96,13 +93,9 @@ export default function ReportCardInfinite({
                     </p>
                   )}
                 </div>
-                <div className="flex items-center gap-2">
-                  <p className="text-sm text-muted-foreground">
-                    {report.room?.name}
-                  </p>{" "}
-                  {allowedRole(session?.session?.user.role ?? "") &&
-                    isUserOnly && <ReportTableAction reportId={report.id} />}
-                </div>
+                <p className="text-sm text-muted-foreground">
+                  {report.room?.name}
+                </p>
               </div>
               <div className="flex items-start gap-2 mt-2">
                 <div className="text-muted-foreground">

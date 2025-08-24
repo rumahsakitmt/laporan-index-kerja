@@ -5,6 +5,7 @@ import {
   Sheet,
   SheetContent,
   SheetDescription,
+  SheetFooter,
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
@@ -25,8 +26,13 @@ import ReportDetail from "./report-detail";
 import { Button } from "@/components/ui/button";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import DeleteReportButton from "../delete-report-button";
+import { useEditSheetStore } from "../../hooks/use-edit-report";
+import { usePathname } from "next/navigation";
 
 export default function ReportSheet() {
+  const pathname = usePathname();
+  const { openSheet } = useEditSheetStore();
   const { sheet, closeSheet } = useSheetStore();
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
@@ -41,6 +47,21 @@ export default function ReportSheet() {
             </SheetHeader>
           </VisuallyHidden>
           <ReportDetail />
+          <SheetFooter>
+            {pathname.startsWith("/laporan") && (
+              <>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    openSheet(sheet.reportId);
+                  }}
+                >
+                  Edit
+                </Button>
+                <DeleteReportButton reportId={sheet.reportId} />
+              </>
+            )}
+          </SheetFooter>
         </SheetContent>
       </Sheet>
     );
@@ -59,6 +80,19 @@ export default function ReportSheet() {
           <ReportDetail />
         </ScrollArea>
         <DrawerFooter>
+          {pathname.startsWith("/laporan") && (
+            <>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  openSheet(sheet.reportId);
+                }}
+              >
+                Edit
+              </Button>
+              <DeleteReportButton reportId={sheet.reportId} />
+            </>
+          )}
           <DrawerClose asChild>
             <Button variant="outline">Keluar</Button>
           </DrawerClose>
