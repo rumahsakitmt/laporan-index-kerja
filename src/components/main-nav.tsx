@@ -8,17 +8,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { DoorOpen, NotebookPen, User2 } from "lucide-react";
+import { User2 } from "lucide-react";
 import Image from "next/image";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import SignOutButton from "./sign-out-button";
 import Link from "next/link";
-import GoogleSigninButton from "./google-signin-button";
-import { allowedRole } from "@/lib/utils";
 import { ModeToggle } from "./toogle-mode";
 import MainNavLink from "./main-nav-link";
 import MobileNav from "./mobile-nav";
+import NonAuthLink from "./non-auth-link";
 
 export default async function MainNavigation() {
   const session = await auth.api.getSession({
@@ -60,23 +59,6 @@ export default async function MainNavigation() {
                 <DropdownMenuContent align="end">
                   <DropdownMenuLabel>{session.user.name}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  {allowedRole(session.user.role ?? "") && (
-                    <>
-                      <Link href={`/laporan/${session.user.id}`}>
-                        <DropdownMenuItem>
-                          <NotebookPen />
-                          Laporanku
-                        </DropdownMenuItem>
-                      </Link>
-
-                      <Link href="/ruangan">
-                        <DropdownMenuItem>
-                          <DoorOpen />
-                          Ruangan
-                        </DropdownMenuItem>
-                      </Link>
-                    </>
-                  )}
                   <Link href="/profile">
                     <DropdownMenuItem>
                       <User2 />
@@ -88,14 +70,12 @@ export default async function MainNavigation() {
               </DropdownMenu>
             </>
           ) : (
-            <div className="flex items-center gap-2">
-              <GoogleSigninButton />
-            </div>
+            <NonAuthLink />
           )}
           <ModeToggle />
         </div>
       </nav>
-      {session && <MobileNav userId={session.user.id} />}
+      <MobileNav />
     </>
   );
 }

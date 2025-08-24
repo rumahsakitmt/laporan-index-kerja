@@ -5,12 +5,19 @@ import { signIn } from "@/lib/auth-client";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
 
-export default function GoogleSigninButton() {
+export default function GoogleSigninButton({
+  size = "default",
+}: {
+  size?: "default" | "sm";
+}) {
   const [loading, setLoading] = React.useState(false);
   return (
     <Button
       variant="outline"
-      className={cn("w-full gap-2")}
+      className={cn(
+        "gap-2",
+        size === "sm" && "w-auto text-xs flex flex-col border-none"
+      )}
       disabled={loading}
       onClick={async () => {
         await signIn.social(
@@ -52,7 +59,9 @@ export default function GoogleSigninButton() {
           d="M130.55 50.479c24.514 0 41.05 10.589 50.479 19.438l36.844-35.974C195.245 12.91 165.798 0 130.55 0C79.49 0 35.393 29.301 13.925 71.947l42.211 32.783c10.59-31.477 39.891-54.251 74.414-54.251"
         />
       </svg>
-      Masuk
+      <span className={cn(size === "sm" && "text-xs text-muted-foreground")}>
+        Masuk
+      </span>
     </Button>
   );
 }

@@ -6,12 +6,11 @@ import { usePathname } from "next/navigation";
 import { Home, Plus, FileText, ChartBar, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useReportFormStore } from "@/features/report/hooks/use-report-form";
+import { useAuth } from "@/provider/auth-provider";
+import GoogleSigninButton from "./google-signin-button";
 
-interface MobileNavProps {
-  userId: string;
-}
-
-export default function MobileNav({ userId }: MobileNavProps) {
+export default function MobileNav() {
+  const { session } = useAuth();
   const pathname = usePathname();
   const { open } = useReportFormStore();
 
@@ -19,8 +18,8 @@ export default function MobileNav({ userId }: MobileNavProps) {
     if (path === "/") {
       return pathname === "/";
     }
-    if (path === `/laporan/${userId}`) {
-      return pathname === `/laporan/${userId}`;
+    if (path === `/laporan/${session?.user.id}`) {
+      return pathname === `/laporan/${session?.user.id}`;
     }
     if (path === "/grafik-lik") {
       return pathname === "/grafik-lik";
@@ -47,29 +46,33 @@ export default function MobileNav({ userId }: MobileNavProps) {
           <span className="text-xs font-medium">Home</span>
         </Link>
 
-        <Link
-          href={`/laporan/${userId}`}
-          className={cn(
-            "flex flex-col items-center gap-1 p-2 rounded-lg transition-colors",
-            isActive(`/laporan/${userId}`)
-              ? "text-primary bg-primary/10"
-              : "text-muted-foreground hover:text-foreground"
-          )}
-        >
-          <FileText className="h-5 w-5" />
-          <span className="text-xs font-medium">Laporanku</span>
-        </Link>
+        {session && (
+          <>
+            <Link
+              href={`/laporan/${session?.user.id}`}
+              className={cn(
+                "flex flex-col items-center gap-1 p-2 rounded-lg transition-colors",
+                isActive(`/laporan/${session?.user.id}`)
+                  ? "text-primary bg-primary/10"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              <FileText className="h-5 w-5" />
+              <span className="text-xs font-medium">Laporanku</span>
+            </Link>
 
-        <button
-          onClick={open}
-          className="flex flex-col items-center gap-1 p-2 rounded-lg transition-colors text-muted-foreground hover:text-foreground"
-        >
-          <div className="relative">
-            <Plus className="h-5 w-5" />
-            <div className="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full"></div>
-          </div>
-          <span className="text-xs font-medium">Buat Laporan</span>
-        </button>
+            <button
+              onClick={open}
+              className="flex flex-col items-center gap-1 p-2 rounded-lg transition-colors text-muted-foreground hover:text-foreground"
+            >
+              <div className="relative">
+                <Plus className="h-5 w-5" />
+                <div className="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full"></div>
+              </div>
+              <span className="text-xs font-medium">Buat Laporan</span>
+            </button>
+          </>
+        )}
 
         <Link
           href="/grafik-lik"
@@ -84,18 +87,22 @@ export default function MobileNav({ userId }: MobileNavProps) {
           <span className="text-xs font-medium">Chart</span>
         </Link>
 
-        <Link
-          href="/profile"
-          className={cn(
-            "flex flex-col items-center gap-1 p-2 rounded-lg transition-colors",
-            isActive("/profile")
-              ? "text-primary bg-primary/10"
-              : "text-muted-foreground hover:text-foreground"
-          )}
-        >
-          <User className="h-5 w-5" />
-          <span className="text-xs font-medium">Profile</span>
-        </Link>
+        {session ? (
+          <Link
+            href="/profile"
+            className={cn(
+              "flex flex-col items-center gap-1 p-2 rounded-lg transition-colors",
+              isActive("/profile")
+                ? "text-primary bg-primary/10"
+                : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            <User className="h-5 w-5" />
+            <span className="text-xs font-medium">Profile</span>
+          </Link>
+        ) : (
+          <GoogleSigninButton size="sm" />
+        )}
       </div>
     </nav>
   );
