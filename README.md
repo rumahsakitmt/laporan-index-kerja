@@ -2,17 +2,20 @@
 
 ## Deskripsi
 
-Laporan ini menyajikan hasil analisis dari index kerja yang telah dilakukan. Index kerja ini mencakup berbagai aspek penting seperti produktivitas, efisiensi, dan kinerja karyawan. Laporan ini ditujukan untuk memberikan gambaran yang jelas tentang kondisi kerja dan memberikan saran untuk meningkatkan kinerja.
+Laporan Index Kerja adalah aplikasi web yang dirancang untuk mengelola dan melacak laporan kerja harian di RSUD Mamuju Tengah. Aplikasi ini memungkinkan pengguna untuk:
 
-## Cara Menjalankan di Lokal
+- **Membuat dan Mengelola Laporan**: Pengguna dapat membuat laporan kerja harian dengan detail seperti tanggal, waktu, ruangan, tugas, dan catatan
+- **Dashboard dan Grafik**: Menyediakan visualisasi data dalam bentuk grafik dan dashboard untuk analisis kinerja
+- **Responsive Design**: Antarmuka yang responsif dan dapat diakses dari berbagai perangkat
 
-- Clone repository ini ke komputer lokal
-- Masuk ke direktori yang telah di clone `cd laporan-index-kerja`
-- Install dependencies dengan menjalankan perintah `bun install` atau `npm install`
-- Tulis environment variables pada file `.env.local`
-    ```
-    TURSO_DATABASE_URL=
-    TURSO_AUTH_TOKEN=
-    ```
-- Jalankan aplikasi dengan menjalankan perintah `bun dev` atau `npm run dev`
-- Akses laporan index kerja melalui browser di alamat `http://localhost:3000`
+Aplikasi ini dibangun menggunakan teknologi modern seperti Next.js, TypeScript, dan database SQL dengan fokus pada keamanan, performa, dan kemudahan penggunaan.
+
+## License
+
+Aplikasi ini dilisensikan di bawah Creative Commons Attribution-NonCommercial 4.0 International License - lihat file [LICENSE](LICENSE) untuk detail lebih lanjut.
+
+## Team Pengembang
+
+- IT RSUD Mamuju Tengah
+
+Catatan: Aplikasi ini dikembangkan khusus untuk RSUD Mamuju Tengah dan disesuaikan dengan kebutuhan dan kebijakan internal rumah sakit.
